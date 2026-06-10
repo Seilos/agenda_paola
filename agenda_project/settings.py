@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import psycopg2
 
 # 1. Cargar variables de entorno
 load_dotenv()
@@ -85,11 +86,14 @@ DATABASES = {
 }
 """
 # 2. Configurar base de datos apuntando a las variables cargadas
+DATABASE_URL = os.getenv("DATABASE_URL")
+connection = psycopg2.connect(DATABASE_URL)
+
 DATABASES = {
     'default': {
-        'ENGINE':'djanbo.db.backends.postgresql',
+        'ENGINE':'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('BS_USER'),
+        'USER': os.getenv('DB_USER'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),             
@@ -97,7 +101,7 @@ DATABASES = {
 }
 
 # 3. Registrar que usaremos un Custom User Model (Usuario Personalizado)
-AUTH_USER_MODEL = 'agenda.Usuario'
+#AUTH_USER_MODEL = 'agenda.Usuario'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
