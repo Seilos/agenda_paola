@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# ----------------Django_Q-----------------
+Q_CLUSTER = {
+    'name': 'DjangoORM',
+    'workers': 4,
+    'recycle': 500,
+    'timeout': 60,
+    'orm': 'default'
+}
+# ------------------------------------------
