@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('agenda/', include('agenda.urls')),
+    # Redirige a las urls de la aplicacion admin
+    path('admin/', admin.site.urls), 
+
+    # Esta linea redirige a las urls de la aplicacion agenda
+    path('agenda/', include('agenda.urls')), 
 ]
