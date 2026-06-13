@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r9-ggmlpb#o24rrhh&ok1_jjom4&&f)c%p4kh!d!o9a9==*5+g'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = []
 
@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'django_q',
     'agenda',
 ]
+
+# 3. Registrar que usaremos un Custom User Model (Usuario Personalizado)
+AUTH_USER_MODEL = 'agenda.Usuario'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,7 +92,7 @@ DATABASES = {
 """
 # 2. Configurar base de datos apuntando a las variables cargadas
 DATABASE_URL = os.getenv("DATABASE_URL")
-connection = psycopg2.connect(DATABASE_URL)
+#connection = psycopg2.connect(DATABASE_URL)
 
 DATABASES = {
     'default': {
@@ -102,8 +105,7 @@ DATABASES = {
     }
 }
 
-# 3. Registrar que usaremos un Custom User Model (Usuario Personalizado)
-#AUTH_USER_MODEL = 'agenda.Usuario'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
