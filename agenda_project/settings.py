@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_q',
     'agenda',
+    'autenticacion',
 ]
 
 # 3. Registrar que usaremos un Custom User Model (Usuario Personalizado)
@@ -142,6 +143,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'agenda_project' / 'static',
+]
 
 # ----------------Django_Q-----------------
 Q_CLUSTER = {

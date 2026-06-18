@@ -23,4 +23,7 @@ urlpatterns = [
 
     # Esta linea redirige a las urls de la aplicacion agenda
     path('agenda/', include('agenda.urls')), 
+
+    # Esta linea redirige a las urls de la aplicacion autenticacion
+    path('', include('autenticacion.urls')), 
 ]

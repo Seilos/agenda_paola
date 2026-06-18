@@ -37,9 +37,9 @@ class Consultas(MultiMixin):
     hereda de MultiMixin
     """
     fecha_hora = models.DateTimeField(null=True, blank=True)
-    nombre_paciente = models.CharField(max_length=100, null=True, blank=True)
-    estudiante = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, limit_choices_to={'rol': 'ESTUDIANTE'})
-    profesor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, limit_choices_to={'rol': 'PROFESOR'})
+    nombre_id = models.ForeignKey(Paciente, on_delete=models.PROTECT, null=True, blank=True)
+    estudiante_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, limit_choices_to={'rol': 'ESTUDIANTE'}, related_name='consultas_como_estudiante')
+    profesor_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, limit_choices_to={'rol': 'PROFESOR'}, related_name='consultas_como_profesor')
     
     # Diagnostico
     diagnostico_estudiante = models.TextField(null=True, blank=True)
@@ -57,14 +57,14 @@ class Consultas(MultiMixin):
     observaciones_evaluacion = models.TextField(null=True, blank=True)   
        
     def __str__(self):
-        return f"Consulta de {self.nombre_paciente}"
+        return f"Consulta de {self.nombre_id}"
         
     class Meta:
         verbose_name = "Consulta"
         verbose_name_plural = "Consultas"
         constraints = [
             models.UniqueConstraint(
-                fields=['estudiante', 'nombre_paciente', 'fecha_hora'],
+                fields=['estudiante_id', 'nombre_id', 'fecha_hora'],
                 name='unique_consulta_por_estudiante'
             )
         ]
