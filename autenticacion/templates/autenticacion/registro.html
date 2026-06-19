@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Agenda</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6C63FF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Agenda Paola">
+
+    <!-- Ícono para Apple (iOS no usa manifest) -->
+    <link rel="apple-touch-icon" href="{% static 'images/icono-192.png' %}">
+
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'autenticacion/registro.css' %}">
+
+    <!-- Registro del Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register("{% static 'sw.js' %}")
+                    .catch(err => console.error('Error al registrar el Service Worker:', err));
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div id="register-screen" class="register-container">
+        <div class="header-register">
+            <a class="back-icon" href="{% url 'login' %}" style="text-decoration: none; color: inherit;">← Volver</a>
+            <div class="section-title">REGISTRO DE ESTUDIANTE</div>
+        </div>
+
+        <div class="register-content">
+            <div class="register-card">
+                <h2>Crear Nueva Cuenta</h2>
+                <p>Completa tus datos para registrarte como Estudiante.</p>
+
+                <!-- Formulario registro de usuario -->
+                <form id="form-registro" method="post" action="{% url 'registro' %}">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                    <div class="non-field-errors" style="background-color: #ffe6e6; color: #cc0000; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffa3a3; font-family: sans-serif;">
+                        {% for error in form.non_field_errors %}
+                        <p style="margin: 0; font-size: 0.9rem; font-weight: 500;">⚠️ {{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Campo de usuario -->
+                    <div class="form-group">
+                        <label for="reg-username">Usuario (Username)</label>
+                        <input type="text" id="reg-username" name="username" placeholder="Ej: nick123" required
+                            value="{{ form.username.value|default:'' }}">
+                        {% if form.username.errors %}
+                        <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.username.errors.0 }}</span>
+                        {% endif %}
+
+                    </div>
+                    <!-- Fin campo de usuario -->
+
+                    <!-- Campo nombre y apellido -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reg-firstname">Nombre</label>
+                            <input type="text" id="reg-firstname" name="first_name" placeholder="Tu nombre" required
+                                value="{{ form.first_name.value|default:'' }}">
+                            {% if form.first_name.errors %}
+                            <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.first_name.errors.0 }}</span>
+                            {% endif %}
+
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-lastname">Apellido</label>
+                            <input type="text" id="reg-lastname" name="last_name" placeholder="Tu apellido" required
+                                value="{{ form.last_name.value|default:'' }}">
+                            {% if form.last_name.errors %}
+                            <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.last_name.errors.0 }}</span>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <!-- Fin campo nombre y apellido -->
+
+                    <!-- Campo correo electrónico -->
+                    <div class="form-group">
+                        <label for="reg-email">Correo Electrónico</label>
+                        <input type="email" id="reg-email" name="email" placeholder="ejemplo@correo.com" required
+                            value="{{ form.email.value|default:'' }}">
+                        {% if form.email.errors %}
+                        <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+
+                    </div>
+                    <!-- Fin campo correo electrónico -->
+
+                    <!-- Campo contraseña -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reg-pass1">Contraseña</label>
+                            <input type="password" id="reg-pass1" name="password1" placeholder="Mínimo 6 caracteres"
+                                required>
+                            {% if form.password1.errors %}
+                            <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.password1.errors.0 }}</span>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reg-pass2">Repetir Contraseña</label>
+                            <input type="password" id="reg-pass2" name="password2" placeholder="Repetir contraseña"
+                                required>
+                            {% if form.password2.errors %}
+                            <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.password2.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Fin campo contraseña -->
+
+                    <!-- Botón de registro -->
+                    <button type="submit" class="btn-register-submit">Registrarse</button>
+                </form>
+                <!--Fin Formulario registro de usuario -->
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

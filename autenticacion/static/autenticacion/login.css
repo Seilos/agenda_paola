@@ -1,0 +1,187 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f9fbfb;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    width: 100vw !important;
+    background: linear-gradient(135deg, #2c3e50, #1abc9c) !important;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    z-index: 5000;
+    transition: opacity 0.3s ease;
+}
+
+.ocultar-pantalla {
+    display: none !important;
+}
+
+.login-box {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 20px;
+    width: 100%;
+    max-width: 340px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.login-logo {
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.logo-libreta {
+    font-size: 4.5rem;
+    display: block;
+    margin-bottom: 5px;
+    color: #ffffff !important;
+    line-height: 1;
+    filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.2));
+    font-family: Arial, sans-serif;
+}
+
+.login-logo h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #ffffff !important;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #ffffff !important;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.login-form input::placeholder {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.login-form input:focus {
+    border-color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Override autofill del navegador (Chrome/Edge ponen fondo azul/gris) */
+.login-form input:-webkit-autofill,
+.login-form input:-webkit-autofill:hover,
+.login-form input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.15) inset !important;
+    box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.15) inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: #ffffff;
+    border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: -5px;
+    margin-bottom: 30px;
+    padding: 0 2px;
+    box-sizing: border-box;
+}
+
+.remember-me {
+    font-size: 0.85rem;
+    color: #ffffff !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remember-me span {
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.remember-me input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid rgba(255, 255, 255, 0.7) !important;
+    border-radius: 4px !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    cursor: pointer;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.remember-me input[type="checkbox"]:checked {
+    background-color: #1abc9c !important;
+    border-color: #1abc9c !important;
+}
+
+.remember-me input[type="checkbox"]:checked::before {
+    content: '✓';
+    font-size: 10px;
+    color: #ffffff !important;
+    font-weight: 900;
+    position: absolute;
+}
+
+.register-link {
+    font-size: 0.85rem;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background-color: #ffffff !important;
+    color: #2c3e50 !important;
+    border: none !important;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-login:hover {
+    background-color: #f4f6f6 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.btn-login:active {
+    transform: translateY(1px);
+}

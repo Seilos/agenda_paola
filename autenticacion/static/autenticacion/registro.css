@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.register-container {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+     background-color: #ffffff;
+     z-index: 5500;
+     display: flex;
+     flex-direction: column;
+     box-sizing: border-box;
+ }
+
+.header-register {
+    height: 60px;
+    background: linear-gradient(90deg, #2c3e50, #1abc9c);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+ .back-icon {
+     cursor: pointer;
+     padding: 8px 12px;
+     background: rgba(255, 255, 255, 0.15);
+     border-radius: 4px;
+     font-size: 0.9rem;
+     font-weight: 600;
+     transition: background 0.2s;
+ }
+
+ .back-icon:hover {
+     background: rgba(255, 255, 255, 0.3);
+ }
+
+.register-content {
+     flex: 1;
+     display: flex;
+     justify-content: center;
+    align-items: flex-start;
+     overflow-y: auto;
+     padding: 30px 15px;
+     background-color: #f8fafc;
+     box-sizing: border-box;
+ }
+
+.register-card {
+    font-family: 'Inter', sans-serif;
+     background: #ffffff;
+     padding: 30px;
+     border-radius: 8px;
+     width: 100%;
+     max-width: 480px;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+     box-sizing: border-box;
+ }
+
+ .register-card h2 {
+     margin-top: 0;
+     color: #2c3e50;
+     font-size: 1.5rem;
+ }
+
+ .register-card p {
+     color: #64748b;
+     font-size: 0.9rem;
+     margin-bottom: 25px;
+ }
+
+ .form-group {
+     display: flex;
+     flex-direction: column;
+     margin-bottom: 16px;
+     width: 100%;
+     box-sizing: border-box;
+     /* Asegura que el padding no estire los inputs */
+ }
+
+ /* CORRECCIÓN: Contenedor en fila con soporte para envolver (Wrap) */
+ .form-row {
+     display: flex;
+     gap: 12px;
+     width: 100%;
+     box-sizing: border-box;
+ }
+
+ .form-row .form-group {
+     flex: 1;
+     min-width: 0;
+     /* Evita que los inputs hijos rompan el flexbox */
+ }
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+ .form-group input {
+     width: 100%;
+     /* Forzamos a que ocupen el 100% de su celda correspondiente */
+     padding: 11px 14px;
+     border: 1px solid #cbd5e1;
+     border-radius: 6px;
+     font-size: 0.95rem;
+     outline: none;
+     transition: border-color 0.2s;
+     box-sizing: border-box;
+     /* Crucial para evitar que desborden */
+ }
+
+ .form-group input:focus {
+     border-color: #1abc9c;
+ }
+
+ .btn-register-submit {
+     width: 100%;
+     padding: 13px;
+     background: linear-gradient(90deg, #2c3e50, #1abc9c);
+     color: white;
+     border: none;
+     border-radius: 6px;
+     font-size: 1rem;
+     font-weight: 700;
+     cursor: pointer;
+     margin-top: 10px;
+     box-shadow: 0 4px 10px rgba(26, 188, 156, 0.2);
+     transition: opacity 0.2s;
+     box-sizing: border-box;
+ }
+
+ .btn-register-submit:hover {
+     opacity: 0.95;
+ }
+
+ /* NUEVO: REGLA RESPONSIVE PARA DISPOSITIVOS MÓVILES (Pantallas de menos de 480px) */
+ @media (max-width: 480px) {
+     .form-row {
+         flex-direction: column;
+         /* Apila Nombre y Apellido verticalmente */
+         gap: 0;
+         /* El espacio lo manejará el margin-bottom del form-group */
+     }
+ }
