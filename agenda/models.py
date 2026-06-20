@@ -14,9 +14,24 @@ class Usuario(AbstractUser):
     ('ADMINISTRADOR', 'Administrador')
     )
     rol = models.CharField(max_length=20, choices=Roles, default='ESTUDIANTE')
+    recien_registrado = models.BooleanField(default=True)
     
     def __str__(self):
         return self.username
+
+    @property
+    def obtener_rol_display(self):
+        """
+        Calcula jerárquicamente el rol del usuario para el frontend.
+        Garantiza que un Superusuario siempre sea reconocido como Administrador,
+        y de lo contrario, devuelve el formato legible del rol asignado.
+        """
+        # Validación de seguridad: Si es superusuario de Django, tiene el rol máximo por defecto
+        if self.is_superuser:
+            return 'Administrador'
+        
+        # El método nativo get_rol_display() de Django convierte 'PROFESOR' en 'Profesor' automáticamente
+        return self.get_rol_display()
     
 # 2. Modelo para paciente anonimo
 

@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.http import JsonResponse
 
 urlpatterns = [
     # Redirige a las urls de la aplicacion admin
     path('admin/', admin.site.urls), 
+
+    # Silenciar errores del reporter de DevTools del IDE
+    path('.well-known/appspecific/com.chrome.devtools.json', lambda r: JsonResponse({})),
 
     # Esta linea redirige a las urls de la aplicacion agenda
     path('agenda/', include('agenda.urls')), 

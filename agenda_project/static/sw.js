@@ -1,9 +1,8 @@
 // Service Worker - Agenda Paola PWA
-const CACHE_NAME = 'agenda-paola-v1';
+const CACHE_NAME = 'agenda-paola-v2';
 
 // Archivos a guardar en caché para uso offline
 const ASSETS_TO_CACHE = [
-    '/',
     '/static/manifest.json',
     '/static/images/icono-192.png',
     '/static/images/icono-512.png',

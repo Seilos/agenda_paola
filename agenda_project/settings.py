@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_q',
     'agenda',
     'autenticacion',
+    'auditlog',
 ]
 
 # 3. Registrar que usaremos un Custom User Model (Usuario Personalizado)
@@ -58,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Auditlog: captura el usuario autenticado en cada request
+    'auditlog.middleware.AuditlogMiddleware',
 ]
 
 ROOT_URLCONF = 'agenda_project.urls'
@@ -132,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Caracas'
 
 USE_I18N = True
 
@@ -148,6 +151,18 @@ STATICFILES_DIRS = [
     BASE_DIR / 'agenda_project' / 'static',
 ]
 
+# ----------------Configuración de Sesión----------------
+# La sesión dura 15 días (en segundos)
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 15
+
+# La sesión persiste aunque se cierre el navegador
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Renueva el tiempo de expiración en cada petición del usuario
+# (mientras el usuario use la app, la sesión no expira)
+SESSION_SAVE_EVERY_REQUEST = True
+# -------------------------------------------------------
+
 # ----------------Django_Q-----------------
 Q_CLUSTER = {
     'name': 'DjangoORM',
@@ -159,7 +174,7 @@ Q_CLUSTER = {
 # ------------------------------------------
 
 #--------Configuración de Autenticación--------
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'agenda:index'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
 #------------------------------------------

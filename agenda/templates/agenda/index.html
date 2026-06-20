@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends 'agenda/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% block title %}Inicio - Agenda{% endblock %}
 
-<body>
-    <h1>Acceso concedido</h1>
-</body>
+{% block section_name %}Dashboard{% endblock %}
 
-</html>
+{% block content %}
+    <h2 id="view-title">Bienvenido a la Agenda</h2>
+    <p>Selecciona una opción del menú para comenzar.</p>
+{% endblock %}

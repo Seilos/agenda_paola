@@ -1,0 +1,151 @@
+{% extends 'agenda/base.html' %}
+
+{% block title %}Gestión de Usuarios - Agenda{% endblock %}
+
+{% block section_name %}Gestión de Usuarios{% endblock %}
+
+{% block content %}
+<div class="usuarios-container" style="max-width: 1200px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+    
+    <h2 id="view-title" style="color: #2c3e50; margin-bottom: 25px; font-weight: 700; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px;">Administración de Usuarios</h2>
+
+    <!-- Navegación de Pestañas (Tabs) -->
+    <div style="display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #f0f2f5; padding-bottom: 2px;">
+        <a href="?tab=pendientes" style="padding: 10px 20px; text-decoration: none; font-weight: 600; font-size: 0.95rem; border-radius: 6px 6px 0 0; transition: all 0.2s; {% if tab != 'todos' %} background: linear-gradient(90deg, #2c3e50, #1abc9c); color: white; {% else %} color: #7f8c8d; background-color: #fafbfc; border: 1px solid #f0f2f5; border-bottom: none; {% endif %}">
+            Pendientes por Activar
+        </a>
+        <a href="?tab=todos" style="padding: 10px 20px; text-decoration: none; font-weight: 600; font-size: 0.95rem; border-radius: 6px 6px 0 0; transition: all 0.2s; {% if tab == 'todos' %} background: linear-gradient(90deg, #2c3e50, #1abc9c); color: white; {% else %} color: #7f8c8d; background-color: #fafbfc; border: 1px solid #f0f2f5; border-bottom: none; {% endif %}">
+            Todos los Usuarios
+        </a>
+    </div>
+
+    <!-- Contenido de las Pestañas -->
+    {% if usuarios %}
+        <div style="overflow-x: auto; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+            <table style="width:100%; border-collapse: collapse; font-size: 0.95rem; background: #ffffff; min-width: 800px;">
+                <thead>
+                    <tr style="background: linear-gradient(90deg, #2c3e50, #1abc9c); color: white;">
+                        {% if tab != 'todos' %}
+                            <!-- Columnas Pestaña Pendientes -->
+                            <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Fecha de Registro</th>
+                            <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Usuario</th>
+                            <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Nombre y Apellido</th>
+                            <th style="padding: 14px 18px; text-align: center; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px; width: 120px;">Acciones</th>
+                        {% else %}
+                            <!-- Columnas Pestaña Todos -->
+                            <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Fecha de Creación</th>
+                            <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Última Sesión</th>
+                            <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Usuario (Rol)</th>
+                            <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Nombre y Apellido</th>
+                            <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Nota Promedio</th>
+                            <th style="padding: 14px 18px; text-align: center; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px; width: 150px;">Estado</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr class="user-row" style="border-bottom: 1px solid #f0f2f5; transition: background 0.2s;">
+                        
+                        {% if tab != 'todos' %}
+                            <!-- Datos Pestaña Pendientes -->
+                            <td style="padding: 14px 18px; color: #7f8c8d; font-weight: 500;">
+                                {{ usuario.date_joined|date:"d/m/Y H:i" }}
+                            </td>
+                            <td style="padding: 14px 18px; color: #2c3e50; font-weight: 600;">
+                                {{ usuario.username }}
+                            </td>
+                            <td style="padding: 14px 18px; color: #34495e;">
+                                {{ usuario.first_name }} {{ usuario.last_name }}
+                            </td>
+                            <td style="padding: 14px 18px; text-align: center;">
+                                <form action="{% url 'agenda:cambiar_estado_usuario' usuario.id %}" method="POST" style="margin: 0; display: inline-block;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="tab_origen" value="pendientes">
+                                    <button type="submit" style="background: #1abc9c; color: white; border: none; padding: 6px 14px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: opacity 0.2s;">
+                                        Activar
+                                    </button>
+                                </form>
+                            </td>
+                        {% else %}
+                            <!-- Datos Pestaña Todos -->
+                            <td style="padding: 14px 18px; color: #7f8c8d;">
+                                {{ usuario.date_joined|date:"d/m/Y H:i" }}
+                            </td>
+                            <td style="padding: 14px 18px; color: #7f8c8d;">
+                                {{ usuario.last_login|date:"d/m/Y H:i"|default:"-" }}
+                            </td>
+                            <td style="padding: 14px 18px;">
+                                <strong style="color: #2c3e50; font-weight: 600;">{{ usuario.username }}</strong>
+                                <span style="font-size: 0.8rem; color: #7f8c8d; display: block;">
+                                    ({{ usuario.obtener_rol_display }})
+                                </span>
+                            </td>
+                            <td style="padding: 14px 18px; color: #34495e;">
+                                {{ usuario.first_name }} {{ usuario.last_name }}
+                            </td>
+                            <td style="padding: 14px 18px; color: #34495e; font-weight: 600;">
+                                <!-- Nota promedio marcada para uso futuro -->
+                                <span style="color: #95a5a6; font-weight: 400; font-style: italic;">Sin evaluar</span>
+                            </td>
+                            <td style="padding: 14px 18px; text-align: center;">
+                                {% if usuario.id == request.user.id %}
+                                    <!-- Evitar que el profesor se desactive a sí mismo -->
+                                    <span style="background-color: #eaf2f8; color: #2471a3; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Activo (Tú)</span>
+                                {% else %}
+                                    <form action="{% url 'agenda:cambiar_estado_usuario' usuario.id %}" method="POST" style="margin: 0; display: inline-block;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="tab_origen" value="todos">
+                                        {% if usuario.is_active %}
+                                            <button type="submit" style="background-color: #ebf5fb; color: #2980b9; border: 1px solid #2980b9; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; width: 100px;">
+                                                Activo
+                                            </button>
+                                        {% else %}
+                                            <button type="submit" style="background-color: #fcedd8; color: #e67e22; border: 1px solid #e67e22; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; width: 100px;">
+                                                Inactivo
+                                            </button>
+                                        {% endif %}
+                                    </form>
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación de 50 en 50 -->
+        {% if usuarios.has_other_pages %}
+        <div style="margin-top: 25px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.9rem;">
+            {% if usuarios.has_previous %}
+                <a href="?tab={{ tab }}&page={{ usuarios.previous_page_number }}" style="color: #2c3e50; text-decoration: none; padding: 6px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-weight: 600; background-color: #ffffff; transition: background 0.2s;">&laquo; Anterior</a>
+            {% else %}
+                <span style="color: #bdc3c7; padding: 6px 12px; border: 1px solid #f0f2f5; border-radius: 4px; background-color: #fafbfc;">&laquo; Anterior</span>
+            {% endif %}
+
+            <span style="color: #7f8c8d; font-weight: 500;">
+                Página <strong style="color: #2c3e50;">{{ usuarios.number }}</strong> de {{ usuarios.paginator.num_pages }}
+            </span>
+
+            {% if usuarios.has_next %}
+                <a href="?tab={{ tab }}&page={{ usuarios.next_page_number }}" style="color: #2c3e50; text-decoration: none; padding: 6px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-weight: 600; background-color: #ffffff; transition: background 0.2s;">Siguiente &raquo;</a>
+            {% else %}
+                <span style="color: #bdc3c7; padding: 6px 12px; border: 1px solid #f0f2f5; border-radius: 4px; background-color: #fafbfc;">Siguiente &raquo;</span>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+    {% else %}
+        <div style="text-align: center; padding: 40px; color: #95a5a6; background: #fafbfc; border-radius: 8px; border: 1px dashed #dcdde1;">
+            <p style="font-size: 1.1rem; margin: 0;">No hay usuarios en esta lista de momento.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+<style>
+    .user-row:hover {
+        background-color: #fafbfc;
+    }
+</style>
+{% endblock %}

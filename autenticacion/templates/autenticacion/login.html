@@ -33,6 +33,9 @@
             });
         }
     </script>
+
+    <!-- Helper para el boton de submit -->
+    <script src="{% static 'js/form_helper.js' %}"></script>
 </head>
 
 <body>
@@ -67,18 +70,12 @@
 
                     <!-- MENSAJES DE ALERTA -->
                     {% if messages %}
-                    <div class="messages-container" style="margin-top: 15px; width: 100%;">
+                    <div class="messages-container">
                         {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}" style="position: relative; padding: 12px 35px 12px 15px; border-radius: 8px; font-size: 0.9rem; font-weight: 500; font-family: sans-serif; text-align: left; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between;
-                            {% if message.tags == 'success' %}
-                                background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
-                            {% elif message.tags == 'error' or message.tags == 'danger' %}
-                                background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
-                            {% else %}
-                                background-color: #e2e3e5; color: #383d41; border: 1px solid #d6d8db;
-                            {% endif %}">
+                        <div class="alert alert-{{ message.tags }}">
                             <span>{{ message }}</span>
-                            <button type="button" onclick="this.parentElement.style.display='none';" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2rem; line-height: 1; color: inherit; cursor: pointer; opacity: 0.6; padding: 0 5px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">×</button>
+                            <button type="button" onclick="this.parentElement.style.display='none';"
+                                class="alert-close-btn">×</button>
                         </div>
                         {% endfor %}
                     </div>

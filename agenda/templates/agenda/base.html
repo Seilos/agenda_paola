@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Agenda Médica{% endblock %}</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6C63FF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Agenda Paola">
+
+    <!-- Ícono para Apple (iOS no usa manifest) -->
+    <link rel="apple-touch-icon" href="{% static 'images/icono-192.png' %}">
+
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+
+    <!-- CSS base del dashboard -->
+    <link rel="stylesheet" href="{% static 'agenda/index.css' %}">
+
+    <!-- CSS adicional por sección (opcional, cada página puede agregar el suyo) -->
+    {% block extra_css %}{% endblock %}
+
+    <!-- Registro del Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register("{% static 'sw.js' %}")
+                    .catch(err => console.error('Error al registrar el Service Worker:', err));
+            });
+        }
+    </script>
+
+    <!-- JS del dashboard (drawer, menú usuario, etc.) -->
+    <script src="{% static 'agenda/index.js' %}" defer></script>
+
+    <!-- Helper para el botón de submit -->
+    <script src="{% static 'js/form_helper.js' %}" defer></script>
+
+    <!-- JS adicional por sección (opcional) -->
+    {% block extra_js %}{% endblock %}
+</head>
+
+<body>
+
+    <div id="app-interface">
+
+        <!-- Cortina de fondo del drawer (mobile) -->
+        <div id="drawerOverlay" class="drawer-overlay" onclick="toggleDrawer()"></div>
+
+        <!-- ── BARRA SUPERIOR ── -->
+        <div class="header">
+            <div class="menu-icon" onclick="toggleDrawer()">☰</div>
+            <div class="section-title" id="current-section">AGENDA - {% block section_name %}Dashboard{% endblock %}</div>
+
+            <div class="user-dropdown-container">
+                <div class="user-badge" id="user-display" onclick="toggleUserMenu(event)">
+                    {{ user.get_full_name|default:user.username }}
+                    {% if user.obtener_rol_display %}
+                    <span style="font-size: 0.75rem; font-weight: 400; opacity: 0.85; margin-left: 4px;">
+                        ({{ user.obtener_rol_display }})
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div id="user-menu" class="user-dropdown-menu">
+                    <form action="{% url 'agenda:cerrar_sesion' %}" method="POST" style="margin: 0;">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item"
+                            style="background: none; border: none; width: 100%; box-sizing: border-box; font-family: inherit;">
+                            ✕ Cerrar Sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PANEL LATERAL (DRAWER) ── -->
+        <div id="myDrawer" class="drawer">
+
+            <div class="menu-item" onclick="location.href='{% url 'agenda:index' %}'">Dashboard</div>
+
+            {% if user.rol == 'PROFESOR' or user.is_superuser %}
+            <div class="menu-item" onclick="toggleSubmenu('profesorSub')">Profesor ▾</div>
+            <div id="profesorSub" class="submenu">
+                <div class="menu-item" onclick="selectSection('Pendientes', this)">Pendientes</div>
+                <div class="menu-item" onclick="selectSection('Historico Profesor', this)">Historico</div>
+                <a class="menu-item" href="{% url 'agenda:actividad' %}" style="text-decoration: none; color: inherit; display: block;">Actividad</a>
+                <a class="menu-item" href="{% url 'agenda:gestion_usuarios' %}" style="text-decoration: none; color: inherit; display: block;">Usuarios</a>
+            </div>
+            {% endif %}
+
+            {% if user.rol == 'ESTUDIANTE' or user.is_superuser %} 
+            <div class="menu-item" onclick="toggleSubmenu('estudianteSub')">Estudiante ▾</div>
+            <div id="estudianteSub" class="submenu">
+                <div class="menu-item" onclick="selectSection('Nueva Consulta', this)">Nueva Consulta</div>
+                <div class="menu-item" onclick="selectSection('Historico Estudiante', this)">Historico</div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- ── ÁREA DE CONTENIDO (cada sección la sobreescribe) ── -->
+        <div class="content">
+            {% block content %}
+            <!-- Contenido por defecto si ninguna sección lo sobreescribe -->
+            {% endblock %}
+        </div>
+
+    </div>
+
+</body>
+
+</html>

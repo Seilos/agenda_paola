@@ -33,6 +33,9 @@
             });
         }
     </script>
+
+    <!-- Helper para el boton de submit -->
+    <script src="{% static 'js/form_helper.js' %}"></script>
 </head>
 
 <body>
@@ -52,7 +55,8 @@
                     {% csrf_token %}
 
                     {% if form.non_field_errors %}
-                    <div class="non-field-errors" style="background-color: #ffe6e6; color: #cc0000; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffa3a3; font-family: sans-serif;">
+                    <div class="non-field-errors"
+                        style="background-color: #ffe6e6; color: #cc0000; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffa3a3; font-family: sans-serif;">
                         {% for error in form.non_field_errors %}
                         <p style="margin: 0; font-size: 0.9rem; font-weight: 500;">⚠️ {{ error }}</p>
                         {% endfor %}
@@ -65,7 +69,8 @@
                         <input type="text" id="reg-username" name="username" placeholder="Ej: nick123" required
                             value="{{ form.username.value|default:'' }}">
                         {% if form.username.errors %}
-                        <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.username.errors.0 }}</span>
+                        <span class="error-text" style="color: red; font-size: 0.85rem;">
+                            {{ form.username.errors.0 }}</span>
                         {% endif %}
 
                     </div>
@@ -78,7 +83,8 @@
                             <input type="text" id="reg-firstname" name="first_name" placeholder="Tu nombre" required
                                 value="{{ form.first_name.value|default:'' }}">
                             {% if form.first_name.errors %}
-                            <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.first_name.errors.0 }}</span>
+                            <span class="error-text" style="color: red; font-size: 0.85rem;">
+                                {{ form.first_name.errors.0 }}</span>
                             {% endif %}
 
                         </div>
@@ -87,7 +93,8 @@
                             <input type="text" id="reg-lastname" name="last_name" placeholder="Tu apellido" required
                                 value="{{ form.last_name.value|default:'' }}">
                             {% if form.last_name.errors %}
-                            <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.last_name.errors.0 }}</span>
+                            <span class="error-text" style="color: red; font-size: 0.85rem;">
+                                {{ form.last_name.errors.0 }}</span>
                             {% endif %}
 
                         </div>
@@ -100,7 +107,8 @@
                         <input type="email" id="reg-email" name="email" placeholder="ejemplo@correo.com" required
                             value="{{ form.email.value|default:'' }}">
                         {% if form.email.errors %}
-                        <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.email.errors.0 }}</span>
+                        <span class="error-text" style="color: red; font-size: 0.85rem;">
+                            {{ form.email.errors.0 }}</span>
                         {% endif %}
 
                     </div>
@@ -113,7 +121,8 @@
                             <input type="password" id="reg-pass1" name="password1" placeholder="Mínimo 6 caracteres"
                                 required>
                             {% if form.password1.errors %}
-                            <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.password1.errors.0 }}</span>
+                            <span class="error-text" style="color: red; font-size: 0.85rem;">
+                                {{ form.password1.errors.0}}</span>
                             {% endif %}
 
                         </div>
@@ -123,7 +132,8 @@
                             <input type="password" id="reg-pass2" name="password2" placeholder="Repetir contraseña"
                                 required>
                             {% if form.password2.errors %}
-                            <span class="error-text" style="color: red; font-size: 0.85rem;">{{ form.password2.errors.0 }}</span>
+                            <span class="error-text" style="color: red; font-size: 0.85rem;">
+                                {{ form.password2.errors.0 }}</span>
                             {% endif %}
                         </div>
                     </div>
