@@ -102,19 +102,30 @@ def actividad(request):
 def gestion_usuarios(request):
     """Vista para administrar usuarios, accesible solo para Profesores y Administradores.
     Muestra los usuarios ordenados en dos grupos (activos/todos y pendientes de activación).
+    Soporta búsquedas a través del parámetro 'q'.
     """
     if not (request.user.rol == 'PROFESOR' or request.user.is_superuser):
         return redirect('agenda:index')
 
     tab = request.GET.get('tab', 'pendientes') # Por defecto muestra la pestaña de pendientes
+    q = request.GET.get('q', '').strip()
     
     # Obtener usuarios según la pestaña seleccionada
     if tab == 'todos':
         # Todos los usuarios registrados
         usuarios_list = Usuario.objects.all().order_by('-date_joined')
     else:
-        # Usuarios pendientes de activación (is_active=False)
-        usuarios_list = Usuario.objects.filter(is_active=False).order_by('-date_joined')
+        # Usuarios pendientes de activación (is_active=False y recien_registrado=True)
+        usuarios_list = Usuario.objects.filter(is_active=False, recien_registrado=True).order_by('-date_joined')
+
+    # Filtrado por búsqueda si se especificó el parámetro 'q'
+    if q:
+        from django.db.models import Q
+        usuarios_list = usuarios_list.filter(
+            Q(username__icontains=q) |
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q)
+        )
 
     # Paginación de 50 en 50
     paginator = Paginator(usuarios_list, 50)
@@ -124,6 +135,7 @@ def gestion_usuarios(request):
     context = {
         'usuarios': page_obj,
         'tab': tab,
+        'q': q,
     }
     return render(request, 'agenda/usuarios.html', context)
 
@@ -143,10 +155,60 @@ def cambiar_estado_usuario(request, usuario_id):
         usuario = Usuario.objects.get(id=usuario_id)
         # Invertir el estado de activación
         usuario.is_active = not usuario.is_active
+        if usuario.is_active:
+            # Una vez activado, deja de ser recién registrado para siempre
+            usuario.recien_registrado = False
         usuario.save()
         
-        # Redirigir a la pestaña correspondiente
+        # Redirigir a la pestaña correspondiente, conservando la búsqueda si aplica
         tab_origen = request.POST.get('tab_origen', 'pendientes')
-        return redirect(f"/agenda/usuarios/?tab={tab_origen}")
+        q = request.POST.get('q', '')
+        url = f"/agenda/usuarios/?tab={tab_origen}"
+        if q:
+            from django.utils.http import urlencode
+            url += "&" + urlencode({'q': q})
+        return redirect(url)
         
     return redirect('agenda:gestion_usuarios')
+
+
+from django.http import JsonResponse
+
+@login_required
+def buscar_usuarios_ajax(request):
+    """Endpoint AJAX para el autocompletado en tiempo real de búsqueda de usuarios.
+    """
+    if not (request.user.rol == 'PROFESOR' or request.user.is_superuser):
+        return JsonResponse({'error': 'No autorizado'}, status=403)
+        
+    tab = request.GET.get('tab', 'pendientes')
+    q = request.GET.get('q', '').strip()
+    
+    if not q:
+        return JsonResponse({'usuarios': []})
+        
+    # Aplicamos el mismo filtro base de la pestaña activa
+    if tab == 'todos':
+        usuarios_qs = Usuario.objects.all()
+    else:
+        usuarios_qs = Usuario.objects.filter(is_active=False, recien_registrado=True)
+        
+    from django.db.models import Q
+    usuarios_qs = usuarios_qs.filter(
+        Q(username__icontains=q) |
+        Q(first_name__icontains=q) |
+        Q(last_name__icontains=q)
+    ).order_by('-date_joined')[:10]  # Limitar a 10 resultados para el dropdown
+    
+    resultados = []
+    for u in usuarios_qs:
+        resultados.append({
+            'id': u.id,
+            'username': u.username,
+            'first_name': u.first_name,
+            'last_name': u.last_name,
+            'rol_display': u.obtener_rol_display,
+            'is_active': u.is_active,
+        })
+        
+    return JsonResponse({'usuarios': resultados})

@@ -9,14 +9,41 @@
     
     <h2 id="view-title" style="color: #2c3e50; margin-bottom: 25px; font-weight: 700; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px;">Administración de Usuarios</h2>
 
-    <!-- Navegación de Pestañas (Tabs) -->
-    <div style="display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #f0f2f5; padding-bottom: 2px;">
-        <a href="?tab=pendientes" style="padding: 10px 20px; text-decoration: none; font-weight: 600; font-size: 0.95rem; border-radius: 6px 6px 0 0; transition: all 0.2s; {% if tab != 'todos' %} background: linear-gradient(90deg, #2c3e50, #1abc9c); color: white; {% else %} color: #7f8c8d; background-color: #fafbfc; border: 1px solid #f0f2f5; border-bottom: none; {% endif %}">
-            Pendientes por Activar
-        </a>
-        <a href="?tab=todos" style="padding: 10px 20px; text-decoration: none; font-weight: 600; font-size: 0.95rem; border-radius: 6px 6px 0 0; transition: all 0.2s; {% if tab == 'todos' %} background: linear-gradient(90deg, #2c3e50, #1abc9c); color: white; {% else %} color: #7f8c8d; background-color: #fafbfc; border: 1px solid #f0f2f5; border-bottom: none; {% endif %}">
-            Todos los Usuarios
-        </a>
+    <!-- Navegación de Pestañas (Tabs) y Buscador -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #f0f2f5; padding-bottom: 2px;">
+        <div style="display: flex; gap: 10px;">
+            <a href="?tab=pendientes{% if q %}&q={{ q }}{% endif %}" style="padding: 10px 20px; text-decoration: none; font-weight: 600; font-size: 0.95rem; border-radius: 6px 6px 0 0; transition: all 0.2s; {% if tab != 'todos' %} background: linear-gradient(90deg, #2c3e50, #1abc9c); color: white; {% else %} color: #7f8c8d; background-color: #fafbfc; border: 1px solid #f0f2f5; border-bottom: none; {% endif %}">
+                Pendientes por Activar
+            </a>
+            <a href="?tab=todos{% if q %}&q={{ q }}{% endif %}" style="padding: 10px 20px; text-decoration: none; font-weight: 600; font-size: 0.95rem; border-radius: 6px 6px 0 0; transition: all 0.2s; {% if tab == 'todos' %} background: linear-gradient(90deg, #2c3e50, #1abc9c); color: white; {% else %} color: #7f8c8d; background-color: #fafbfc; border: 1px solid #f0f2f5; border-bottom: none; {% endif %}">
+                Todos los Usuarios
+            </a>
+        </div>
+        
+        <!-- Buscador con Autocompletado -->
+        <div style="position: relative; margin-bottom: 8px; width: 300px;">
+            <form method="GET" action="" id="search-form" style="margin: 0; display: flex; align-items: center; border: 1.5px solid #dcdde1; border-radius: 20px; padding: 4px 12px; background: #fafbfc; transition: border-color 0.2s, box-shadow 0.2s;">
+                <input type="hidden" name="tab" value="{{ tab }}">
+                <svg style="width: 16px; height: 16px; color: #7f8c8d; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" name="q" id="search-input" value="{{ q }}" placeholder="Buscar usuario..." autocomplete="off" style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.9rem; color: #2c3e50; font-weight: 500;">
+                {% if q %}
+                    <a href="?tab={{ tab }}" style="color: #bdc3c7; text-decoration: none; display: flex; align-items: center; justify-content: center; padding: 2px;" title="Limpiar búsqueda">
+                        <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </a>
+                {% endif %}
+            </form>
+            
+            <!-- Lista Desplegable (Dropdown) de Autocompletado -->
+            <div id="autocomplete-dropdown" style="display: none; position: absolute; top: 105%; left: 0; right: 0; background: white; border: 1px solid #dcdde1; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 1000; max-height: 250px; overflow-y: auto;">
+                <ul id="autocomplete-list" style="list-style: none; margin: 0; padding: 0;">
+                    <!-- Los elementos se insertarán dinámicamente con JS -->
+                </ul>
+            </div>
+        </div>
     </div>
 
     <!-- Contenido de las Pestañas -->
@@ -61,6 +88,7 @@
                                 <form action="{% url 'agenda:cambiar_estado_usuario' usuario.id %}" method="POST" style="margin: 0; display: inline-block;">
                                     {% csrf_token %}
                                     <input type="hidden" name="tab_origen" value="pendientes">
+                                    <input type="hidden" name="q" value="{{ q }}">
                                     <button type="submit" style="background: #1abc9c; color: white; border: none; padding: 6px 14px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: opacity 0.2s;">
                                         Activar
                                     </button>
@@ -95,6 +123,7 @@
                                     <form action="{% url 'agenda:cambiar_estado_usuario' usuario.id %}" method="POST" style="margin: 0; display: inline-block;">
                                         {% csrf_token %}
                                         <input type="hidden" name="tab_origen" value="todos">
+                                        <input type="hidden" name="q" value="{{ q }}">
                                         {% if usuario.is_active %}
                                             <button type="submit" style="background-color: #ebf5fb; color: #2980b9; border: 1px solid #2980b9; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; width: 100px;">
                                                 Activo
@@ -118,7 +147,7 @@
         {% if usuarios.has_other_pages %}
         <div style="margin-top: 25px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.9rem;">
             {% if usuarios.has_previous %}
-                <a href="?tab={{ tab }}&page={{ usuarios.previous_page_number }}" style="color: #2c3e50; text-decoration: none; padding: 6px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-weight: 600; background-color: #ffffff; transition: background 0.2s;">&laquo; Anterior</a>
+                <a href="?tab={{ tab }}&page={{ usuarios.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" style="color: #2c3e50; text-decoration: none; padding: 6px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-weight: 600; background-color: #ffffff; transition: background 0.2s;">&laquo; Anterior</a>
             {% else %}
                 <span style="color: #bdc3c7; padding: 6px 12px; border: 1px solid #f0f2f5; border-radius: 4px; background-color: #fafbfc;">&laquo; Anterior</span>
             {% endif %}
@@ -128,7 +157,7 @@
             </span>
 
             {% if usuarios.has_next %}
-                <a href="?tab={{ tab }}&page={{ usuarios.next_page_number }}" style="color: #2c3e50; text-decoration: none; padding: 6px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-weight: 600; background-color: #ffffff; transition: background 0.2s;">Siguiente &raquo;</a>
+                <a href="?tab={{ tab }}&page={{ usuarios.next_page_number }}{% if q %}&q={{ q }}{% endif %}" style="color: #2c3e50; text-decoration: none; padding: 6px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-weight: 600; background-color: #ffffff; transition: background 0.2s;">Siguiente &raquo;</a>
             {% else %}
                 <span style="color: #bdc3c7; padding: 6px 12px; border: 1px solid #f0f2f5; border-radius: 4px; background-color: #fafbfc;">Siguiente &raquo;</span>
             {% endif %}
@@ -148,4 +177,94 @@
         background-color: #fafbfc;
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-input');
+        const dropdown = document.getElementById('autocomplete-dropdown');
+        const list = document.getElementById('autocomplete-list');
+        const form = document.getElementById('search-form');
+        const activeTab = "{{ tab }}";
+        
+        let debounceTimer;
+
+        // Focus styling
+        form.addEventListener('focusin', () => {
+            form.style.borderColor = '#1abc9c';
+            form.style.boxShadow = '0 0 0 3px rgba(26, 188, 156, 0.15)';
+        });
+        form.addEventListener('focusout', (e) => {
+            // Close dropdown if focus moves outside search container
+            setTimeout(() => {
+                if (!form.contains(document.activeElement) && !dropdown.contains(document.activeElement)) {
+                    dropdown.style.display = 'none';
+                    form.style.borderColor = '#dcdde1';
+                    form.style.boxShadow = 'none';
+                }
+            }, 150);
+        });
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            const query = searchInput.value.trim();
+            
+            if (query.length < 1) {
+                dropdown.style.display = 'none';
+                return;
+            }
+
+            debounceTimer = setTimeout(() => {
+                fetch(`/agenda/usuarios/buscar/?tab=${activeTab}&q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        list.innerHTML = '';
+                        if (data.usuarios && data.usuarios.length > 0) {
+                            data.usuarios.forEach(user => {
+                                const li = document.createElement('li');
+                                li.style.padding = '10px 14px';
+                                li.style.cursor = 'pointer';
+                                li.style.borderBottom = '1px solid #f0f2f5';
+                                li.style.transition = 'background 0.2s';
+                                
+                                const stateBadge = user.is_active 
+                                    ? `<span style="font-size:0.75rem; color:#1abc9c; background:#e8f8f5; padding:2px 6px; border-radius:10px; margin-left:8px;">Activo</span>`
+                                    : `<span style="font-size:0.75rem; color:#e67e22; background:#fcedd8; padding:2px 6px; border-radius:10px; margin-left:8px;">Inactivo</span>`;
+                                    
+                                li.innerHTML = `
+                                    <div style="font-weight: 600; color: #2c3e50; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
+                                        <span>${user.username}</span>
+                                        <span style="font-size: 0.75rem; color: #7f8c8d; font-weight: normal;">(${user.rol_display})</span>
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: #7f8c8d; margin-top: 2px;">
+                                        ${user.first_name} ${user.last_name} ${stateBadge}
+                                    </div>
+                                `;
+                                
+                                li.addEventListener('mouseover', () => li.style.backgroundColor = '#fafbfc');
+                                li.addEventListener('mouseout', () => li.style.backgroundColor = 'transparent');
+                                
+                                li.addEventListener('click', () => {
+                                    searchInput.value = user.username;
+                                    dropdown.style.display = 'none';
+                                    form.submit();
+                                });
+                                
+                                list.appendChild(li);
+                            });
+                            dropdown.style.display = 'block';
+                        } else {
+                            const li = document.createElement('li');
+                            li.style.padding = '12px 14px';
+                            li.style.color = '#95a5a6';
+                            li.style.fontSize = '0.85rem';
+                            li.style.textAlign = 'center';
+                            li.innerText = 'No se encontraron coincidencias';
+                            list.appendChild(li);
+                            dropdown.style.display = 'block';
+                        }
+                    });
+            }, 250);
+        });
+    });
+</script>
 {% endblock %}
