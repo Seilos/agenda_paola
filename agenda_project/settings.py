@@ -33,7 +33,8 @@ DEBUG = os.getenv("DEBUG") == "True"
 ALLOWED_HOSTS = []
 
 
-# Application definition
+# Control de activación de Django Silk (Cambia a True para volver a perfilar)
+ENABLE_SILK = False
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -47,6 +48,9 @@ INSTALLED_APPS = [
     'autenticacion',
     'auditlog',
 ]
+
+if ENABLE_SILK:
+    INSTALLED_APPS.append('silk')
 
 # 3. Registrar que usaremos un Custom User Model (Usuario Personalizado)
 AUTH_USER_MODEL = 'agenda.Usuario'
@@ -63,18 +67,22 @@ MIDDLEWARE = [
     'auditlog.middleware.AuditlogMiddleware',
 ]
 
+if ENABLE_SILK:
+    MIDDLEWARE.insert(2, 'silk.middleware.SilkyMiddleware')
+
 ROOT_URLCONF = 'agenda_project.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'agenda.context_processors.export_settings',
             ],
         },
     },
@@ -178,4 +186,11 @@ LOGIN_REDIRECT_URL = 'agenda:index'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
 #------------------------------------------
+
+
+# -------- Configuración de Django Silk --------
+SILKY_AUTHENTICATION = True
+SILKY_AUTHORISATION = True
+SILKY_PERMISSIONS = lambda user: user.is_superuser
+# ---------------------------------------------
 

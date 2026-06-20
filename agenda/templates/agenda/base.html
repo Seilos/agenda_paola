@@ -20,7 +20,10 @@
     <!-- Manifest PWA -->
     <link rel="manifest" href="{% static 'manifest.json' %}">
 
-    <!-- CSS base del dashboard -->
+    <!-- Sistema de Diseño Global (variables, layout, componentes) -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <!-- CSS específico de la app agenda -->
     <link rel="stylesheet" href="{% static 'agenda/index.css' %}">
 
     <!-- CSS adicional por sección (opcional, cada página puede agregar el suyo) -->
@@ -92,6 +95,9 @@
                 <div class="menu-item" onclick="selectSection('Historico Profesor', this)">Historico</div>
                 <a class="menu-item" href="{% url 'agenda:actividad' %}" style="text-decoration: none; color: inherit; display: block;">Actividad</a>
                 <a class="menu-item" href="{% url 'agenda:gestion_usuarios' %}" style="text-decoration: none; color: inherit; display: block;">Usuarios</a>
+                {% if user.is_superuser and ENABLE_SILK %}
+                <a class="menu-item" href="/silk/" target="_blank" style="text-decoration: none; color: inherit; display: block;">Rendimiento (Silk)</a>
+                {% endif %}
             </div>
             {% endif %}
 

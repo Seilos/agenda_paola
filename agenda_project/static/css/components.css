@@ -1,0 +1,19 @@
+/* ==========================================================================
+   Componentes Reutilizables (Buttons, Tables, Forms, Badges...)
+   ==========================================================================
+   
+   Este archivo está reservado para los estilos de componentes globales.
+   A medida que vayas refactorizando los HTML (usuarios.html, actividad.html, etc.)
+   mueve sus clases de tabla, botones y formularios a este archivo.
+   
+   Ejemplo de estructura futura:
+   
+   -- Botones (btn, btn-primary, btn-danger, btn-ghost) --
+   -- Tablas  (dashboard-table, dashboard-table th, td)  --
+   -- Inputs / Forms (form-group, form-label, form-input) --
+   -- Badges de Estado (badge-active, badge-inactive)     --
+   -- Tarjetas / Cards (card, card-header, card-body)     --
+   -- Alertas / Mensajes (alert, alert-error, alert-info) --
+   -- Paginación (pagination, pagination-btn)              --
+
+*/

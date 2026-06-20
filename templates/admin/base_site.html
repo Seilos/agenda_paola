@@ -1,0 +1,12 @@
+{% extends "admin/base_site.html" %}
+
+{% block nav-global %}
+    {{ block.super }}
+    {% if user.is_superuser and ENABLE_SILK %}
+        <div style="display: inline-block; margin-left: 15px; vertical-align: middle;">
+            <a href="/silk/" target="_blank" style="background: #1abc9c; color: white; padding: 5px 12px; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.85rem; border: none; transition: background 0.2s;">
+                ⚡ Ver Rendimiento (Silk)
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

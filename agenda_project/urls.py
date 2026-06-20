@@ -31,3 +31,10 @@ urlpatterns = [
     # Esta linea redirige a las urls de la aplicacion autenticacion
     path('', include('autenticacion.urls')), 
 ]
+
+from django.conf import settings
+if getattr(settings, 'ENABLE_SILK', False):
+    urlpatterns += [
+        # Ruta de Django Silk para perfilado de rendimiento
+        path('silk/', include('silk.urls', namespace='silk')),
+    ]

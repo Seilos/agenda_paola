@@ -6,6 +6,9 @@ from .form import RegistroUsuarioForm
 # Crear la vista de registro
 
 def registro_estudiante(request):
+    if request.user.is_authenticated:
+        return redirect('agenda:index')
+        
     if request.method == "POST":
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():

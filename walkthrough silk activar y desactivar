@@ -1,0 +1,11 @@
+# Walkthrough - Performance Profiling with Django Silk (Updated Toggle UI)
+
+The integration has been updated to automatically hide all navigation links when Django Silk is disabled:
+
+1. **Context Processor**:
+   - Created [context_processors.py](file:///c:/Users/I5/Documents/CODIGO/AGENDA_PAOLA/agenda/context_processors.py) to export the `ENABLE_SILK` settings variable directly to the templates context.
+   - Registered `'agenda.context_processors.export_settings'` inside `'context_processors'` in [settings.py](file:///c:/Users/I5/Documents/CODIGO/AGENDA_PAOLA/agenda_project/settings.py).
+
+2. **Template Updates**:
+   - Updated the sidebar menu link in [base.html](file:///c:/Users/I5/Documents/CODIGO/AGENDA_PAOLA/agenda/templates/agenda/base.html) to check both `user.is_superuser` and `ENABLE_SILK` before rendering.
+   - Updated the admin header shortcut button in [base_site.html](file:///c:/Users/I5/Documents/CODIGO/AGENDA_PAOLA/templates/admin/base_site.html) to conditionally render only if `ENABLE_SILK` is active.
