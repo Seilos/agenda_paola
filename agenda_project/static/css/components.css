@@ -1,19 +1,578 @@
 /* ==========================================================================
-   Componentes Reutilizables (Buttons, Tables, Forms, Badges...)
+   components.css — Componentes Reutilizables del Sistema de Diseño
    ==========================================================================
-   
-   Este archivo está reservado para los estilos de componentes globales.
-   A medida que vayas refactorizando los HTML (usuarios.html, actividad.html, etc.)
-   mueve sus clases de tabla, botones y formularios a este archivo.
-   
-   Ejemplo de estructura futura:
-   
-   -- Botones (btn, btn-primary, btn-danger, btn-ghost) --
-   -- Tablas  (dashboard-table, dashboard-table th, td)  --
-   -- Inputs / Forms (form-group, form-label, form-input) --
-   -- Badges de Estado (badge-active, badge-inactive)     --
-   -- Tarjetas / Cards (card, card-header, card-body)     --
-   -- Alertas / Mensajes (alert, alert-error, alert-info) --
-   -- Paginación (pagination, pagination-btn)              --
+   Orden de secciones:
+   1. Forms (form-group, labels, inputs generales)
+   2. Botones (btn-primary, btn-ghost)
+   3. Badges de Estado
+   4. Alertas
+   5. Panel/Card contenedor de página
+   6. Tabs de navegación
+   7. Buscador
+   8. Tablas del Dashboard
+   9. Paginación
+   ========================================================================== */
 
-*/
+
+/* --------------------------------------------------------------------------
+   1. FORMULARIOS — Grupos, Labels e Inputs generales
+   -------------------------------------------------------------------------- */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-row .form-group {
+    flex: 1;
+    min-width: 0;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: var(--font-family);
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+}
+
+/* Texto de error de validación de campo */
+.field-error {
+    color: #e74c3c;
+    font-size: 0.82rem;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+
+/* --------------------------------------------------------------------------
+   2. BOTONES
+   -------------------------------------------------------------------------- */
+
+/* Botón principal: gradiente del sistema */
+.btn-primary {
+    background: var(--header-gradient);
+    color: white;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    box-sizing: border-box;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Botón secundario / "limpiar" */
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f2f4f4;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 9px 15px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    font-family: var(--font-family);
+    border: 1px solid #dcdde1;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-sizing: border-box;
+}
+
+.btn-ghost:hover {
+    background-color: #e8ecec;
+    color: var(--text-color);
+}
+
+/* Botón de submit ancho completo (registro, formularios de auth) */
+.btn-block {
+    width: 100%;
+    padding: 13px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(26, 188, 156, 0.2);
+    box-sizing: border-box;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. BADGES DE ESTADO
+   -------------------------------------------------------------------------- */
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.badge-active {
+    background-color: #ebf5fb;
+    color: #2980b9;
+    border: 1px solid #2980b9;
+}
+
+.badge-inactive {
+    background-color: #fcedd8;
+    color: #e67e22;
+    border: 1px solid #e67e22;
+}
+
+.badge-self {
+    background-color: #eaf2f8;
+    color: #2471a3;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. ALERTAS Y MENSAJES
+   -------------------------------------------------------------------------- */
+
+/* Alerta de error general (panel) */
+.alert-panel {
+    background-color: #fceae8;
+    border-left: 4px solid #c0392b;
+    color: #c0392b;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Alerta de error de formulario (non_field_errors) */
+.alert-form-error {
+    background-color: #ffe6e6;
+    color: #cc0000;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ffa3a3;
+}
+
+.alert-form-error p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Alertas de toast (login messages) */
+.messages-container {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.alert {
+    position: relative;
+    padding: 12px 35px 12px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: left;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error,
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-info,
+.alert-warning {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border: 1px solid #d6d8db;
+}
+
+.alert-close-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.6;
+    padding: 0 5px;
+    transition: opacity 0.2s;
+}
+
+.alert-close-btn:hover {
+    opacity: 1;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. PAGE CARD — Contenedor principal de sección (tablas, dashboards)
+   -------------------------------------------------------------------------- */
+
+.page-card {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.page-card-title {
+    color: var(--secondary-color);
+    margin-bottom: 25px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. TAB BAR — Barra de pestañas
+   -------------------------------------------------------------------------- */
+
+.tab-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 2px;
+}
+
+.tab-links {
+    display: flex;
+    gap: 10px;
+}
+
+.tab-link {
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.2s;
+    color: var(--text-muted);
+    background-color: #fafbfc;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+}
+
+.tab-link.active {
+    background: var(--header-gradient);
+    color: white;
+    border-color: transparent;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. BUSCADOR CON AUTOCOMPLETADO
+   -------------------------------------------------------------------------- */
+
+.search-wrapper {
+    position: relative;
+    margin-bottom: 8px;
+    width: 300px;
+}
+
+.search-box {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #dcdde1;
+    border-radius: 20px;
+    padding: 4px 12px;
+    background: #fafbfc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box.focused {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.15);
+}
+
+.search-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    font-weight: 500;
+    font-family: var(--font-family);
+}
+
+.search-clear {
+    color: #bdc3c7;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+
+.autocomplete-dropdown {
+    display: none;
+    position: absolute;
+    top: 105%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.autocomplete-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. TABLAS DEL DASHBOARD
+   -------------------------------------------------------------------------- */
+
+.dashboard-table-wrapper {
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background: #ffffff;
+    min-width: 700px;
+}
+
+.dashboard-table thead tr {
+    background: var(--header-gradient);
+    color: white;
+}
+
+.dashboard-table th {
+    padding: 14px 18px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.dashboard-table tbody tr {
+    transition: background 0.2s;
+}
+
+.dashboard-table tbody tr:hover {
+    background-color: #fafbfc;
+}
+
+.td-muted {
+    color: var(--text-muted);
+}
+
+.td-strong {
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+
+/* --------------------------------------------------------------------------
+   9. PAGINACIÓN
+   -------------------------------------------------------------------------- */
+
+.pagination-bar {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.pagination-btn {
+    color: var(--secondary-color);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid #dcdde1;
+    border-radius: 4px;
+    font-weight: 600;
+    background-color: #ffffff;
+    transition: background 0.2s;
+}
+
+.pagination-btn:hover {
+    background-color: #f0f2f5;
+}
+
+.pagination-btn.disabled {
+    color: #bdc3c7;
+    border-color: var(--border-color);
+    background-color: #fafbfc;
+    pointer-events: none;
+}
+
+.pagination-info {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+
+/* --------------------------------------------------------------------------
+   10. FILTRO DE FECHAS
+   -------------------------------------------------------------------------- */
+
+.filter-form {
+    margin-bottom: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+    background-color: #fafbfc;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.filter-input {
+    padding: 8px 12px;
+    border: 1px solid #dcdde1;
+    border-radius: 4px;
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    outline: none;
+    transition: border 0.2s;
+}
+
+.filter-input:focus {
+    border-color: var(--primary-color);
+}
+
+.filter-hint {
+    font-size: 0.8rem;
+    color: #95a5a6;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   11. TABLA DE ESTADO VACÍO
+   -------------------------------------------------------------------------- */
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #95a5a6;
+    background: #fafbfc;
+    border-radius: 8px;
+    border: 1px dashed #dcdde1;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    margin: 0;
+}

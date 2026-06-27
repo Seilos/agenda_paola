@@ -1,0 +1,100 @@
+# Plan de Refactorización CSS - Componentes y Páginas
+
+## Objetivo
+Definir un conjunto de clases CSS reutilizables en `components.css` y aplicarlas para
+limpiar los HTMLs de `autenticacion` (login, registro) y de `agenda` (usuarios, actividad).
+La estética, tamaño y funcionalidad existente debe mantenerse exactamente igual.
+
+---
+
+## FASE 1: Definir Componentes en `components.css`
+
+### Componentes a crear:
+
+| Nombre de Clase | Uso |
+|---|---|
+| `.page-card` | Caja blanca central con sombra (el contenedor de usuarios, actividad) |
+| `.page-card-title` | El `<h2>` con línea divisoria al fondo |
+| `.tab-bar` | Fila de pestañas + buscador (flex container) |
+| `.tab-link` | Enlace de pestaña inactiva (gris) |
+| `.tab-link.active` | Enlace de pestaña activa (gradiente) |
+| `.search-box` | Caja del buscador (borde redondeado) |
+| `.search-input` | Input de texto interior al buscador |
+| `.autocomplete-dropdown` | Lista desplegable de autocompletado |
+| `.dashboard-table-wrapper` | `div` con `overflow-x: auto` y `border-radius` |
+| `.dashboard-table` | La tabla (`<table>`) con sus estilos base |
+| `.dashboard-table th` | Cabecera con gradiente |
+| `.dashboard-table td` | Celda con padding y borde inferior |
+| `.btn-primary` | Botón principal (gradiente, blanco) |
+| `.btn-ghost` | Botón secundario/limpiar (fondo gris, borde) |
+| `.badge-active` | Badge/pastilla de estado "Activo" (azul) |
+| `.badge-inactive` | Badge/pastilla de estado "Inactivo" (naranja) |
+| `.badge-self` | Badge "Activo (Tú)" del propio usuario |
+| `.alert-error` | Caja de alerta de error roja (para actividad y registro) |
+| `.filter-form` | Formulario de filtro de fechas |
+| `.filter-input` | Input de tipo fecha dentro del filtro |
+| `.pagination-bar` | Contenedor flex de la paginación |
+| `.pagination-btn` | Botón activo de página anterior/siguiente |
+| `.pagination-btn.disabled` | Botón inactivo de paginación |
+| `.auth-container` | Pantalla completa centrada para login/registro |
+| `.auth-card` | Caja central blanca de login/registro |
+| `.auth-input` | Campo de texto/password para formularios de autenticación |
+| `.auth-btn` | Botón de submit de autenticación |
+| `.auth-error-text` | Texto rojo de error de campo (form validation) |
+
+---
+
+## FASE 2: Páginas a Refactorizar
+
+### 2.1 `autenticacion/templates/autenticacion/login.html`
+- Agregar import de `main.css` para compartir variables.
+- Reemplazar clases propias de `login.css` que sean candidatas a ser globales (inputs, botones).
+- Mantener `login.css` solo para el layout centrado único de la pantalla de login (`.login-container`, `.login-box`, `.login-logo`).
+
+### 2.2 `autenticacion/templates/autenticacion/registro.html`
+- Igual que login: agregar `main.css` para variables.
+- Los estilos inline `style="color: red; font-size: 0.85rem;"` de los errores de campo → clase `.auth-error-text`.
+- El bloque de errores generales `style="background-color: #ffe6e6..."` → clase `.alert-error`.
+- Mantener `registro.css` para el layout específico de la página.
+
+### 2.3 `agenda/templates/agenda/usuarios.html`
+- Contenedor principal → `.page-card`
+- Título `<h2>` → `.page-card-title`
+- Fila de tabs + buscador → `.tab-bar`
+- Cada enlace de tab → `.tab-link` + `.active` condicional
+- Buscador form + input → `.search-box` + `.search-input`
+- Dropdown autocompletado → `.autocomplete-dropdown`
+- Wrapper de la tabla → `.dashboard-table-wrapper`
+- La tabla → `.dashboard-table`
+- Botón Activar → `.btn-primary`
+- Botones Activo/Inactivo → `.badge-active` / `.badge-inactive`
+- Badge "Activo (Tú)" → `.badge-self`
+- Paginación → `.pagination-bar` + `.pagination-btn` + `.pagination-btn.disabled`
+
+### 2.4 `agenda/templates/agenda/actividad.html`
+- Contenedor principal → `.page-card`
+- Título → `.page-card-title`
+- Alert de error → `.alert-error`
+- Formulario de fechas → `.filter-form`
+- Inputs de fecha → `.filter-input`
+- Botón Filtrar → `.btn-primary`
+- Botón Limpiar → `.btn-ghost`
+- Wrapper tabla → `.dashboard-table-wrapper`
+- Tabla → `.dashboard-table`
+- Paginación → `.pagination-bar` + `.pagination-btn`
+
+---
+
+## FASE 3: Verificación
+- Revisar visualmente cada página en el navegador para confirmar que la estética es idéntica.
+- Confirmar que la funcionalidad interactiva (tabs, buscador, paginación) sigue funcionando.
+- Verificar que los formularios de login y registro siguen mostrando sus errores de validación correctamente.
+
+---
+
+## Open Questions
+
+> [!IMPORTANT]
+> **Login y Registro:** Estos HTMLs no extienden `base.html`, tienen sus propios `<head>` completos.
+> ¿Quieres también importar `main.css` allí para poder reutilizar las variables de color (ej. `var(--primary-color)`) en `login.css` y `registro.css`?
+> Si lo hacemos, mantendríamos las clases de layout específicas en sus propios CSS, pero los colores y fuentes del sistema estarían centralizados.

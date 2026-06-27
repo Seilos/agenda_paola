@@ -1,0 +1,11 @@
+# Tareas - Refactorización CSS
+
+- [x] Crear `components.css` con todos los componentes globales
+- [/] Actualizar `variables.css` y `main.css` con la fuente Inter
+- [ ] Limpiar `login.css` para usar variables CSS
+- [ ] Limpiar `registro.css` para usar variables y componentes
+- [ ] Agregar `main.css` a `login.html` y `registro.html`
+- [ ] Limpiar `style=""` restantes en `registro.html`
+- [ ] Refactorizar `usuarios.html` para usar clases de componentes
+- [ ] Refactorizar `actividad.html` para usar clases de componentes
+- [ ] Verificar visualmente todas las páginas

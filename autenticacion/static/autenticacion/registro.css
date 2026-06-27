@@ -1,152 +1,156 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* registro.css — Estilos exclusivos de la pantalla de Registro
+   Los componentes reutilizables (.form-group, .form-row, .field-error,
+   .alert-form-error, .btn-primary, .btn-block) están en components.css
+*/
 
+/* Contenedor de pantalla completa */
 .register-container {
-     position: fixed;
-     top: 0;
-     left: 0;
-     width: 100vw;
-     height: 100vh;
-     background-color: #ffffff;
-     z-index: 5500;
-     display: flex;
-     flex-direction: column;
-     box-sizing: border-box;
- }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 5500;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
 
+/* Barra superior del registro (replica la estética del .header global) */
 .header-register {
     height: 60px;
-    background: linear-gradient(90deg, #2c3e50, #1abc9c);
+    background: var(--header-gradient);
     color: white;
     display: flex;
     align-items: center;
     gap: 20px;
     padding: 0 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-light);
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-family);
 }
 
- .back-icon {
-     cursor: pointer;
-     padding: 8px 12px;
-     background: rgba(255, 255, 255, 0.15);
-     border-radius: 4px;
-     font-size: 0.9rem;
-     font-weight: 600;
-     transition: background 0.2s;
- }
+.back-icon {
+    cursor: pointer;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
 
- .back-icon:hover {
-     background: rgba(255, 255, 255, 0.3);
- }
+.back-icon:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
 
+/* Área de contenido desplazable */
 .register-content {
-     flex: 1;
-     display: flex;
-     justify-content: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
     align-items: flex-start;
-     overflow-y: auto;
-     padding: 30px 15px;
-     background-color: #f8fafc;
-     box-sizing: border-box;
- }
-
-.register-card {
-    font-family: 'Inter', sans-serif;
-     background: #ffffff;
-     padding: 30px;
-     border-radius: 8px;
-     width: 100%;
-     max-width: 480px;
-     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-     box-sizing: border-box;
- }
-
- .register-card h2 {
-     margin-top: 0;
-     color: #2c3e50;
-     font-size: 1.5rem;
- }
-
- .register-card p {
-     color: #64748b;
-     font-size: 0.9rem;
-     margin-bottom: 25px;
- }
-
- .form-group {
-     display: flex;
-     flex-direction: column;
-     margin-bottom: 16px;
-     width: 100%;
-     box-sizing: border-box;
-     /* Asegura que el padding no estire los inputs */
- }
-
- /* CORRECCIÓN: Contenedor en fila con soporte para envolver (Wrap) */
- .form-row {
-     display: flex;
-     gap: 12px;
-     width: 100%;
-     box-sizing: border-box;
- }
-
- .form-row .form-group {
-     flex: 1;
-     min-width: 0;
-     /* Evita que los inputs hijos rompan el flexbox */
- }
-
-.form-group label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #64748b;
-    margin-bottom: 6px;
+    overflow-y: auto;
+    padding: 30px 15px;
+    background-color: #f8fafc;
+    box-sizing: border-box;
 }
 
- .form-group input {
-     width: 100%;
-     /* Forzamos a que ocupen el 100% de su celda correspondiente */
-     padding: 11px 14px;
-     border: 1px solid #cbd5e1;
-     border-radius: 6px;
-     font-size: 0.95rem;
-     outline: none;
-     transition: border-color 0.2s;
-     box-sizing: border-box;
-     /* Crucial para evitar que desborden */
- }
+/* Tarjeta central del formulario */
+.register-card {
+    font-family: var(--font-family);
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
 
- .form-group input:focus {
-     border-color: #1abc9c;
- }
+.register-card h2 {
+    margin-top: 0;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+}
 
- .btn-register-submit {
-     width: 100%;
-     padding: 13px;
-     background: linear-gradient(90deg, #2c3e50, #1abc9c);
-     color: white;
-     border: none;
-     border-radius: 6px;
-     font-size: 1rem;
-     font-weight: 700;
-     cursor: pointer;
-     margin-top: 10px;
-     box-shadow: 0 4px 10px rgba(26, 188, 156, 0.2);
-     transition: opacity 0.2s;
-     box-sizing: border-box;
- }
+.register-card p {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
 
- .btn-register-submit:hover {
-     opacity: 0.95;
- }
+/* Botón submit del registro */
+.btn-register-submit {
+    width: 100%;
+    padding: 13px;
+    background: var(--header-gradient);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-family);
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(26, 188, 156, 0.2);
+    transition: opacity 0.2s;
+    box-sizing: border-box;
+}
 
- /* NUEVO: REGLA RESPONSIVE PARA DISPOSITIVOS MÓVILES (Pantallas de menos de 480px) */
- @media (max-width: 480px) {
-     .form-row {
-         flex-direction: column;
-         /* Apila Nombre y Apellido verticalmente */
-         gap: 0;
-         /* El espacio lo manejará el margin-bottom del form-group */
-     }
- }
+.btn-register-submit:hover {
+    opacity: 0.95;
+}
+
+/* --- Estilos para Tom Select (Reemplaza los selects nativos) --- */
+.ts-wrapper .ts-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    color: #334155;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    background-color: #fff;
+    box-shadow: none;
+}
+
+/* Ocultar el outline nativo del input interno */
+.ts-wrapper .ts-control input {
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+}
+
+/* Estado de Foco (El marco verde) */
+.ts-wrapper.focus .ts-control {
+    border-color: var(--primary-color);
+    box-shadow: none;
+}
+
+/* Caja de opciones desplegable */
+.ts-dropdown {
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 4px;
+    font-family: var(--font-family);
+    overflow: hidden; /* Mantiene los bordes redondeados */
+}
+
+/* Opciones individuales de la lista */
+.ts-dropdown .option {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    color: #334155;
+    transition: background-color 0.1s;
+}
+
+/* Opción cuando le pasas el mouse o navegas con teclado */
+.ts-dropdown .active {
+    background-color: #f1f5f9;
+    color: var(--primary-color);
+    font-weight: 600;
+}

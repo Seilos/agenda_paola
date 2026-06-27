@@ -1,16 +1,17 @@
 /* ==========================================================================
    main.css — Punto de Entrada Principal de Estilos
    ==========================================================================
-
-   Este archivo importa todos los módulos CSS en el orden correcto.
-   Solo este archivo debe ser referenciado en base.html.
+   Solo este archivo debe ser referenciado en base.html y en las páginas
+   de autenticacion (login.html, registro.html).
 
    Orden importante:
-   1. variables.css → Define las variables (debe ser el primero)
-   2. layout.css    → Barra superior, panel lateral, contenedor
-   3. components.css → Botones, tablas, formularios, badges (crecer aquí)
+   1. Fuente del sistema (Inter via Google Fonts)
+   2. variables.css  → Define variables globales (debe ser el primero)
+   3. layout.css     → Barra superior, panel lateral, contenedor
+   4. components.css → Botones, tablas, formularios, badges, etc.
    ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('variables.css');
 @import url('layout.css');
 @import url('components.css');

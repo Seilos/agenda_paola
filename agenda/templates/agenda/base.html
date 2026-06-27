@@ -45,6 +45,9 @@
     <!-- Helper para el botón de submit -->
     <script src="{% static 'js/form_helper.js' %}" defer></script>
 
+    <!-- Helper para autocompletado genérico -->
+    <script src="{% static 'js/autocomplete.js' %}" defer></script>
+
     <!-- JS adicional por sección (opcional) -->
     {% block extra_js %}{% endblock %}
 </head>
@@ -59,7 +62,8 @@
         <!-- ── BARRA SUPERIOR ── -->
         <div class="header">
             <div class="menu-icon" onclick="toggleDrawer()">☰</div>
-            <div class="section-title" id="current-section">AGENDA - {% block section_name %}Dashboard{% endblock %}</div>
+            <div class="section-title" id="current-section">AGENDA - {% block section_name %}Dashboard{% endblock %}
+            </div>
 
             <div class="user-dropdown-container">
                 <div class="user-badge" id="user-display" onclick="toggleUserMenu(event)">
@@ -93,18 +97,22 @@
             <div id="profesorSub" class="submenu">
                 <div class="menu-item" onclick="selectSection('Pendientes', this)">Pendientes</div>
                 <div class="menu-item" onclick="selectSection('Historico Profesor', this)">Historico</div>
-                <a class="menu-item" href="{% url 'agenda:actividad' %}" style="text-decoration: none; color: inherit; display: block;">Actividad</a>
-                <a class="menu-item" href="{% url 'agenda:gestion_usuarios' %}" style="text-decoration: none; color: inherit; display: block;">Usuarios</a>
+                <a class="menu-item" href="{% url 'agenda:actividad' %}"
+                    style="text-decoration: none; color: inherit; display: block;">Actividad</a>
+                <a class="menu-item" href="{% url 'agenda:gestion_usuarios' %}"
+                    style="text-decoration: none; color: inherit; display: block;">Usuarios</a>
                 {% if user.is_superuser and ENABLE_SILK %}
-                <a class="menu-item" href="/silk/" target="_blank" style="text-decoration: none; color: inherit; display: block;">Rendimiento (Silk)</a>
+                <a class="menu-item" href="/silk/" target="_blank"
+                    style="text-decoration: none; color: inherit; display: block;">Rendimiento (Silk)</a>
                 {% endif %}
             </div>
             {% endif %}
 
-            {% if user.rol == 'ESTUDIANTE' or user.is_superuser %} 
+            {% if user.rol == 'ESTUDIANTE' or user.is_superuser %}
             <div class="menu-item" onclick="toggleSubmenu('estudianteSub')">Estudiante ▾</div>
             <div id="estudianteSub" class="submenu">
-                <div class="menu-item" onclick="selectSection('Nueva Consulta', this)">Nueva Consulta</div>
+                <a class="menu-item" href="{% url 'agenda:consulta_crud' %}"
+                    style="text-decoration: none; color: inherit; display: block;">Nueva Consulta</a>
                 <div class="menu-item" onclick="selectSection('Historico Estudiante', this)">Historico</div>
             </div>
             {% endif %}

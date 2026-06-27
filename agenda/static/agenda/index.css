@@ -11,9 +11,658 @@
 
    ========================================================================== */
 
-/* Contenedor principal de la interfaz */
 #app-interface {
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+/* Buscadores de Ancho Completo sin borde de caja redundante */
+.form-search-wrapper {
+    position: relative;
+    width: 100%;
+    flex: 1;
+}
+
+.form-search-wrapper input {
+    width: 100%;
+}
+
+/* Contenedor inline para buscador y botón de nuevo paciente */
+.form-group-inline {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+}
+
+.form-group-inline .btn-ghost {
+    white-space: nowrap;
+    padding: 11px 14px;
+    height: 44px;
+    /* Alinear altura con el input estándar de 11px padding + border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Checkbox personalizado estilo Login */
+.custom-checkbox-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #64748b;
+    user-select: none;
+}
+
+.custom-checkbox-container input[type="checkbox"] {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 4px !important;
+    background: #ffffff !important;
+    cursor: pointer !important;
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.custom-checkbox-container input[type="checkbox"]:checked {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    background: var(--primary-color) !important;
+}
+
+.custom-checkbox-container input[type="checkbox"]:checked::before {
+    content: '✓' !important;
+    font-size: 11px !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    position: absolute !important;
+    display: block !important;
+}
+
+/* Fila inferior y alineación de acciones */
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 25px;
+    border-top: 1px solid #f0f2f5;
+    padding-top: 20px;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.fecha-proxima-group {
+    display: none;
+    min-width: 250px;
+}
+
+.fecha-proxima-group.visible {
+    display: block;
+}
+
+.footer-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.footer-actions .btn-primary,
+.footer-actions .btn-ghost {
+    min-width: 160px;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Estilo unificado para el Calendario (date) */
+.fecha-proxima-group input[type="date"] {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: var(--font-family);
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #334155;
+}
+
+.fecha-proxima-group input[type="date"]:focus {
+    border-color: var(--primary-color);
+}
+
+/* Estilo para campos no editables (Estudiante y Fecha/Hora) */
+.form-group input[readonly],
+.form-group input[disabled] {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+/* Adaptabilidad Mobile/Tablet para el Footer (Checkbox, Calendario y Acciones) */
+@media (max-width: 768px) {
+    .footer-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .footer-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .fecha-proxima-group {
+        width: 100%;
+    }
+
+    .footer-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .footer-actions .btn-primary,
+    .footer-actions .btn-ghost {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+/* Adaptabilidad de filas para Tabletas (evitar comprimido horizontal) */
+@media (max-width: 768px) {
+    #form-consulta .form-row {
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+}
+
+/* consulta_crud.html estilos */
+.encabezado-consulta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.titulo-conulta {
+    margin: 0;
+    font-weight: 800;
+    font-size: 1.8rem;
+    color: var(--secondary-color);
+}
+
+.contenedor-fecha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fecha-consulta {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.btn-info-consulta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-info-consulta:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+/* Panel informativo */
+
+#info-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+    z-index: 900;
+}
+
+#info-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    z-index: 901;
+    max-width: 440px;
+    width: 90%;
+}
+
+#info-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+#info-modal-title {
+    margin: 0;
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+}
+
+#info-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    line-height: 1;
+}
+
+#info-modal-close:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+#info-modal-body {
+    color: var(--text-color);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* formulario especifico */
+#consulta-form-row {
+    margin-bottom: 20px;
+}
+
+#id_docente #id_ambulatorio {
+    background-color: #f4f6f8;
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+#consulta-form-fila-2 {
+    margin-bottom: 20px;
+    align-items: flex-start;
+
+}
+
+#consulta-form-tipo-consulta {
+    flex: 0.75;
+}
+
+#consulta-form-tipo-consulta-radio {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    height: 46px;
+}
+
+#consulta-form-tipo-consulta-radio-p {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-weight: normal;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+#consulta-form-tipo-consulta-radio-p-input {
+    width: auto !important;
+    margin: 0 !important;
+}
+
+#consulta-form-tipo-consulta-radio-s {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-weight: normal;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+#consulta-form-tipo-consulta-radio-s-input {
+    width: auto !important;
+    margin: 0 !important;
+}
+
+#consulta-form-genero {
+    flex: 0.75;
+}
+
+#consulta-form-genero-radio {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    height: 46px;
+
+}
+
+#consulta-form-genero-f-input,
+#consulta-form-genero-m-input {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-weight: normal;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+#consulta-form-genero-f-input-input,
+#consulta-form-genero-m-input-input {
+    width: auto !important;
+    margin: 0 !important;
+}
+
+#consulta-form-biopsicosocial {
+    flex: 0.75;
+}
+
+#consulta-form-biopsicosocial-input-n {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-weight: normal;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+#consulta-form-biopsicosocial-input-s {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-weight: normal;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+#consulta-form-biopsicosocial-radio {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    height: 46px;
+}
+
+#consulta-form-biopsicosocial-n-input,
+#consulta-form-biopsicosocial-s-input {
+    width: auto !important;
+    margin: 0 !important;
+}
+
+#form-edad {
+    flex: 1;
+}
+
+#span-edad-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: normal;
+}
+
+#higiene-row {
+    margin-bottom: 20px;
+}
+
+#higiene-form {
+    flex: 2.25;
+}
+
+#higiene-nivel {
+    flex: 1;
+}
+
+#procedimiento-row {
+    margin-bottom: 30px;
+    align-items: flex-start;
+}
+
+#procedimiento-form {
+    flex: 1;
+}
+
+#otros-wrapper {
+    display: none;
+    margin-top: 8px;
+}
+
+#id_procedimiento_otro {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#otros-wrapper-div {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+#btn-cancelar-otro {
+    flex: 1;
+    padding: 8px 12px;
+}
+
+#btn-agregar-otro {
+    flex: 1;
+    padding: 8px 12px;
+}
+
+#procedimientos-realizados {
+    flex: 2;
+}
+
+#procedimientos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    min-height: 46px;
+    background: #fafbfc;
+    align-content: center;
+    box-sizing: border-box;
+}
+
+.btn-procedimiento {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #cbd5e1;
+    background-color: #f1f5f9;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn-procedimiento i {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+#empty-hint {
+    color: #95a5a6;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* botones pestaña 1*/
+#boton-pestaña-1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f2f5;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+#btn-ghost-id {
+    min-width: 220px;
+    text-align: center;
+    padding: 12px 30px;
+    font-size: 1rem;
+}
+
+#boton-pestaña-1-btn-primary {
+    min-width: 220px;
+    padding: 12px 30px;
+    font-size: 1rem;
+}
+
+/* segunda pestaña */
+#panel-segunda {
+    display: none;
+}
+
+#empty-state-segunda {
+    margin-bottom: 30px;
+}
+
+#boton-pestaña-21 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f2f5;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+#boton-pestaña-2-btn-ghost {
+    min-width: 220px;
+    padding: 12px 30px;
+    font-size: 1rem;
+}
+
+#btn-submit-form {
+    min-width: 220px;
+    padding: 12px 30px;
+    font-size: 1rem;
+}
+
+/* ==========================================================================
+   Estilos de Componentes de Formulario Extendidos (Segunda Pestaña)
+   ========================================================================== */
+
+/* Áreas de texto unificadas con el sistema de diseño */
+.form-group textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: var(--font-family, inherit);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #334155;
+    resize: vertical;
+    /* Permite estirar hacia abajo de manera controlada */
+}
+
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb, 0, 128, 128), 0.1);
+}
+
+/* Manejadores de proporciones flexibles para las columnas */
+.flex-1 {
+    flex: 1;
+    min-width: 150px;
+}
+
+.flex-2 {
+    flex: 2;
+    min-width: 250px;
+}
+
+.flex-3 {
+    flex: 3;
+    min-width: 300px;
+}
+
+/* Contenedor inline para grupos de opciones de radio */
+.radio-group-container {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    height: 44px;
+    /* Alineación vertical perfecta con los inputs */
+}
+
+.radio-option-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    color: #334155;
+    cursor: pointer;
+}
+
+/* Separadores de subsecciones dentro del formulario */
+.form-section-title {
+    width: 100%;
+    margin: 20px 0 10px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.form-section-title h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--secondary-color, #475569);
 }

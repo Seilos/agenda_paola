@@ -5,107 +5,103 @@
 {% block section_name %}Actividad del Sistema{% endblock %}
 
 {% block content %}
-<div class="actividad-container" style="max-width: 1200px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-    
-    <!-- Título y Mensajes de Validación -->
-    <h2 id="view-title" style="color: #2c3e50; margin-bottom: 20px; font-weight: 700; border-bottom: 2px solid #f0f2f5; padding-bottom: 12px;">Actividad del Sistema</h2>
-    
+<div class="page-card">
+
+    <!-- Título -->
+    <h2 id="view-title" class="page-card-title">Actividad del Sistema</h2>
+
+    <!-- Mensaje de error de validación de fechas -->
     {% if error_mensaje %}
-        <div style="background-color: #fceae8; border-left: 4px solid #c0392b; color: #c0392b; padding: 12px 16px; border-radius: 4px; margin-bottom: 20px; font-size: 0.95rem; font-weight: 500;">
+        <div class="alert-panel">
             ⚠ {{ error_mensaje }}
         </div>
     {% endif %}
 
     <!-- Formulario de Filtros de Fecha -->
-    <form method="GET" style="margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; background-color: #fafbfc; padding: 15px; border-radius: 8px; border: 1px solid #f0f2f5;">
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label for="fecha_inicio" style="font-size: 0.85rem; font-weight: 600; color: #34495e;">Fecha de Inicio</label>
-            <input type="date" id="fecha_inicio" name="fecha_inicio" value="{{ fecha_inicio }}" style="padding: 8px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-family: inherit; font-size: 0.9rem; color: #2c3e50; outline: none; transition: border 0.2s;">
+    <form method="GET" class="filter-form">
+        <div class="filter-group">
+            <label for="fecha_inicio" class="filter-label">Fecha de Inicio</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" value="{{ fecha_inicio }}" class="filter-input">
         </div>
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label for="fecha_fin" style="font-size: 0.85rem; font-weight: 600; color: #34495e;">Fecha Fin</label>
-            <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" style="padding: 8px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-family: inherit; font-size: 0.9rem; color: #2c3e50; outline: none; transition: border 0.2s;">
+        <div class="filter-group">
+            <label for="fecha_fin" class="filter-label">Fecha Fin</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" class="filter-input">
         </div>
-        <button type="submit" style="background: linear-gradient(90deg, #2c3e50, #1abc9c); color: white; border: none; padding: 9px 20px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: opacity 0.2s; height: 38px;">
-            Filtrar Rango
-        </button>
-        <a href="{% url 'agenda:actividad' %}" style="display: inline-flex; align-items: center; justify-content: center; background-color: #f2f4f4; color: #7f8c8d; text-decoration: none; padding: 9px 15px; border-radius: 4px; font-weight: 600; font-size: 0.9rem; height: 20px; border: 1px solid #dcdde1;">
-            Limpiar
-        </a>
-        <span style="font-size: 0.8rem; color: #95a5a6; margin-bottom: 10px; font-style: italic;">Rango máx. 6 meses</span>
+        <button type="submit" class="btn-primary">Filtrar Rango</button>
+        <a href="{% url 'agenda:actividad' %}" class="btn-ghost">Limpiar</a>
+        <span class="filter-hint">Rango máx. 6 meses</span>
     </form>
 
     {% if logs %}
-        <div style="overflow-x: auto; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
-            <table style="width:100%; border-collapse: collapse; font-size: 0.95rem; background: #ffffff; min-width: 700px;">
+        <div class="dashboard-table-wrapper">
+            <table class="dashboard-table">
                 <thead>
-                    <tr style="background: linear-gradient(90deg, #2c3e50, #1abc9c); color: white;">
-                        <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Fecha</th>
-                        <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Usuario (Rol)</th>
-                        <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Tipo de Acción</th>
-                        <th style="padding: 14px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px;">Descripción del Evento</th>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Usuario (Rol)</th>
+                        <th>Tipo de Acción</th>
+                        <th>Descripción del Evento</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for log in logs %}
-                    <tr class="log-row" style="border-bottom: 1px solid #f0f2f5; transition: background 0.2s;">
+                    <tr>
                         <!-- Fecha y hora -->
-                        <td style="padding: 14px 18px; color: #7f8c8d; font-weight: 500; white-space: nowrap;">
+                        <td class="td-muted" style="white-space: nowrap;">
                             {{ log.timestamp|date:"d/m/Y H:i" }}
                         </td>
-                        
+
                         <!-- Usuario y su Rol -->
-                        <td style="padding: 14px 18px; color: #2c3e50;">
+                        <td class="td-strong">
                             {% if log.actor %}
-                                <strong style="font-weight: 600;">{{ log.actor.username }}</strong>
-                                <span style="font-size: 0.8rem; color: #7f8c8d; display: block;">
+                                <strong>{{ log.actor.username }}</strong>
+                                <span class="td-muted" style="font-size: 0.8rem; display: block;">
                                     ({{ log.actor.obtener_rol_display }})
                                 </span>
                             {% else %}
-                                <span style="color: #bdc3c7; font-style: italic;">Sistema</span>
+                                <span class="td-muted" style="font-style: italic;">Sistema</span>
                             {% endif %}
                         </td>
-                        
-                        <!-- Tipo de Acción Personalizada -->
-                        <td style="padding: 14px 18px; white-space: nowrap;">
+
+                        <!-- Tipo de Acción (badges) -->
+                        <td style="white-space: nowrap;">
                             {% if log.content_type.model == 'usuario' %}
                                 {% if log.action == 0 %}
-                                    <span style="background-color: #e8f8f5; color: #1abc9c; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Registro</span>
+                                    <span class="badge" style="background-color:#e8f8f5;color:#1abc9c;">Registro</span>
                                 {% elif log.action == 1 %}
                                     {% if '"is_active": [false, true]' in log.changes or '"is_active": ["False", "True"]' in log.changes %}
-                                        <span style="background-color: #eaf2f8; color: #2471a3; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Activación de Usuario</span>
+                                        <span class="badge badge-active">Activación de Usuario</span>
                                     {% elif '"is_active": [true, false]' in log.changes or '"is_active": ["True", "False"]' in log.changes %}
-                                        <span style="background-color: #fce4d6; color: #c0392b; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Desactivación</span>
+                                        <span class="badge" style="background-color:#fce4d6;color:#c0392b;">Desactivación</span>
                                     {% else %}
-                                        <span style="background-color: #f4f6f7; color: #7f8c8d; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Modificación Perfil</span>
+                                        <span class="badge" style="background-color:#f4f6f7;color:#7f8c8d;">Modificación Perfil</span>
                                     {% endif %}
                                 {% elif log.action == 2 %}
-                                    <span style="background-color: #fcedd8; color: #e67e22; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Borrar Usuario</span>
+                                    <span class="badge badge-inactive">Borrar Usuario</span>
                                 {% endif %}
-                                
+
                             {% elif log.content_type.model == 'consultas' %}
                                 {% if log.action == 0 %}
-                                    <span style="background-color: #e8f8f5; color: #1abc9c; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Nueva Consulta</span>
+                                    <span class="badge" style="background-color:#e8f8f5;color:#1abc9c;">Nueva Consulta</span>
                                 {% elif log.action == 1 %}
                                     {% if '"calificacion":' in log.changes or '"observaciones_evaluacion":' in log.changes %}
-                                        <span style="background-color: #fef9e7; color: #d4ac0d; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Calificación de Consulta</span>
+                                        <span class="badge" style="background-color:#fef9e7;color:#d4ac0d;">Calificación de Consulta</span>
                                     {% else %}
-                                        <span style="background-color: #ebf5fb; color: #2980b9; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Edición de Consulta</span>
+                                        <span class="badge badge-active">Edición de Consulta</span>
                                     {% endif %}
                                 {% elif log.action == 2 %}
-                                    <span style="background-color: #fcedd8; color: #e67e22; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">Borrar Consulta</span>
+                                    <span class="badge badge-inactive">Borrar Consulta</span>
                                 {% endif %}
                             {% else %}
-                                <!-- fallback para otros modelos (ej. Paciente) -->
-                                <span style="background-color: #f2f4f4; color: #7f8c8d; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">{{ log.get_action_display }} {{ log.content_type.model|capfirst }}</span>
+                                <span class="badge" style="background-color:#f2f4f4;color:#7f8c8d;">{{ log.get_action_display }} {{ log.content_type.model|capfirst }}</span>
                             {% endif %}
                         </td>
-                        
-                        <!-- Descripción/Detalle del Evento -->
-                        <td style="padding: 14px 18px; color: #34495e; font-size: 0.9rem;">
+
+                        <!-- Descripción del Evento -->
+                        <td>
                             {{ log.object_repr }}
                             {% if log.content_type.model == 'consultas' and '"calificacion":' in log.changes %}
-                                <div style="font-size: 0.8rem; color: #7f8c8d; margin-top: 4px; font-style: italic;">
+                                <div class="td-muted" style="font-size: 0.8rem; margin-top: 4px; font-style: italic;">
                                     Evaluación registrada en el sistema.
                                 </div>
                             {% endif %}
@@ -116,40 +112,32 @@
             </table>
         </div>
 
-        <!-- Paginador Estilizado -->
+        <!-- Paginación -->
         {% if logs.has_other_pages %}
-        <div style="margin-top: 25px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.9rem;">
+        <div class="pagination-bar">
             {% if logs.has_previous %}
-                <a href="?page={{ logs.previous_page_number }}&fecha_inicio={{ fecha_inicio }}&fecha_fin={{ fecha_fin }}" style="color: #2c3e50; text-decoration: none; padding: 6px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-weight: 600; background-color: #ffffff; transition: background 0.2s;">&laquo; Anterior</a>
+                <a href="?page={{ logs.previous_page_number }}&fecha_inicio={{ fecha_inicio }}&fecha_fin={{ fecha_fin }}" class="pagination-btn">&laquo; Anterior</a>
             {% else %}
-                <span style="color: #bdc3c7; padding: 6px 12px; border: 1px solid #f0f2f5; border-radius: 4px; background-color: #fafbfc;">&laquo; Anterior</span>
+                <span class="pagination-btn disabled">&laquo; Anterior</span>
             {% endif %}
 
-            <span style="color: #7f8c8d; font-weight: 500;">
-                Página <strong style="color: #2c3e50;">{{ logs.number }}</strong> de {{ logs.paginator.num_pages }}
+            <span class="pagination-info">
+                Página <strong>{{ logs.number }}</strong> de {{ logs.paginator.num_pages }}
             </span>
 
             {% if logs.has_next %}
-                <a href="?page={{ logs.next_page_number }}&fecha_inicio={{ fecha_inicio }}&fecha_fin={{ fecha_fin }}" style="color: #2c3e50; text-decoration: none; padding: 6px 12px; border: 1px solid #dcdde1; border-radius: 4px; font-weight: 600; background-color: #ffffff; transition: background 0.2s;">Siguiente &raquo;</a>
+                <a href="?page={{ logs.next_page_number }}&fecha_inicio={{ fecha_inicio }}&fecha_fin={{ fecha_fin }}" class="pagination-btn">Siguiente &raquo;</a>
             {% else %}
-                <span style="color: #bdc3c7; padding: 6px 12px; border: 1px solid #f0f2f5; border-radius: 4px; background-color: #fafbfc;">Siguiente &raquo;</span>
+                <span class="pagination-btn disabled">Siguiente &raquo;</span>
             {% endif %}
         </div>
         {% endif %}
 
     {% else %}
-        <div style="text-align: center; padding: 40px; color: #95a5a6; background: #fafbfc; border-radius: 8px; border: 1px dashed #dcdde1;">
-            <p style="font-size: 1.1rem; margin: 0;">No hay actividad registrada en este rango de fechas.</p>
+        <div class="empty-state">
+            <p>No hay actividad registrada en este rango de fechas.</p>
         </div>
     {% endif %}
-</div>
 
-<style>
-    .log-row:hover {
-        background-color: #fafbfc;
-    }
-    input[type="date"]:focus {
-        border-color: #1abc9c !important;
-    }
-</style>
+</div>
 {% endblock %}

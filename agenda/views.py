@@ -212,3 +212,8 @@ def buscar_usuarios_ajax(request):
         })
         
     return JsonResponse({'usuarios': resultados})
+
+
+# consultas crud
+def consulta_crud(request):
+    return render(request, 'agenda/consulta_crud.html')

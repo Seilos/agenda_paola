@@ -1,0 +1,271 @@
+{% extends 'agenda/base.html' %}
+{% load static %}
+
+{% block title %}Registro de Caso - Agenda{% endblock %}
+
+{% block section_name %}Registro de Caso{% endblock %}
+
+{% block content %}
+<div class="page-card">
+
+    <!-- ── Encabezado ── -->
+    <div class="encabezado-consulta">
+        <h2 class="titulo-conulta">Registro de Caso</h2>
+        <div class="contenedor-fecha">
+            <span class="fecha-consulta">21/06/2026</span>
+
+            <!-- Botón de información -->
+            <button type="button" class="btn-info-consulta" id="btn-info" onclick="toggleInfoModal()">
+                i
+            </button>
+        </div>
+    </div>
+
+    <!-- ── Modal de Ayuda ── -->
+    <div id="info-modal-overlay" onclick="toggleInfoModal()">
+    </div>
+    <div id="info-modal">
+        <div id="info-modal-header">
+            <h3 id="info-modal-title">Información de
+                ayuda</h3>
+            <button id="info-modal-close" onclick="toggleInfoModal()">✕</button>
+        </div>
+        <p id="info-modal-body">
+            <!-- Contenido estático — se completará más adelante -->
+            La información de ayuda para este formulario estará disponible próximamente.
+        </p>
+    </div>
+
+    <!-- ── Pestañas ── -->
+    <div class="tab-bar" style="margin-bottom: 30px;">
+        <div class="tab-links">
+            <a href="#" id="tab-btn-ficha" class="tab-link active" onclick="switchTab('ficha', event)">Ficha</a>
+            <a href="#" id="tab-btn-segunda" class="tab-link" onclick="switchTab('segunda', event)">Criterios
+                Diagnósticos</a>
+        </div>
+    </div>
+
+    <!-- ── Formulario ── -->
+    <form id="registro-form" method="POST" action="" onsubmit="event.preventDefault(); alert('Caso guardado (Demo).');">
+        {% csrf_token %}
+
+        <!-- ══════════════════════════════════════
+             PANEL — FICHA (pestaña 1)
+             ══════════════════════════════════════ -->
+        <div id="panel-ficha">
+
+            <!-- FILA 1: Docente (readonly), Ambulatorio (readonly), Preceptor (texto libre) -->
+            <div id="consulta-form-row" class="form-row">
+                <div class="form-group" id="consulta-form-docente">
+                    <label for="id_docente">Docente</label>
+                    <input type="text" id="id_docente" name="docente" value="Dr. Alejandro Martínez (Demo)" readonly>
+                </div>
+                <div class="form-group" id="consulta-form-ambulatorio">
+                    <label for="id_ambulatorio">Ambulatorio</label>
+                    <input type="text" id="id_ambulatorio" name="ambulatorio" value="Ambulatorio Norte (Demo)" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="id_preceptor">Preceptor</label>
+                    <input type="text" id="id_preceptor" name="preceptor" placeholder="Nombre del médico preceptor...">
+                </div>
+            </div>
+
+            <!-- FILA 2: Radios + Edad -->
+            <div id="consulta-form-fila-2" class="form-row">
+                <div class="form-group" id="consulta-form-tipo-consulta">
+                    <label>Tipo de consulta</label>
+                    <div id="consulta-form-tipo-consulta-radio">
+                        <label id="consulta-form-tipo-consulta-radio-p">
+                            <input id="consulta-form-tipo-consulta-radio-p-input" type="radio" name="tipo_consulta"
+                                value="P"> P
+                            (Primera)
+                        </label>
+                        <label id="consulta-form-tipo-consulta-radio-s">
+                            <input id="consulta-form-tipo-consulta-radio-s-input" type="radio" name="tipo_consulta"
+                                value="S"> S
+                            (Subsec.)
+                        </label>
+                    </div>
+                </div>
+                <div id="consulta-form-genero" class="form-group">
+                    <label>Género</label>
+                    <div id="consulta-form-genero-radio">
+                        <label id="consulta-form-genero-f-input">
+                            <input id="consulta-form-genero-f-input-input" type="radio" name="genero" value="F"> F
+                            (Femenino)
+                        </label>
+                        <label id="consulta-form-genero-m-input">
+                            <input id="consulta-form-genero-m-input-input" type="radio" name="genero" value="M"> M
+                            (Masculino)
+                        </label>
+                    </div>
+                </div>
+                <div id="consulta-form-biopsicosocial" class="form-group">
+                    <label>Caso Biopsicosocial</label>
+                    <div id="consulta-form-biopsicosocial-radio">
+                        <label id="consulta-form-biopsicosocial-input-n">
+                            <input type="radio" id="consulta-form-biopsicosocial-n-input" name="biopsicosocial"
+                                value="N"> N (No)
+                        </label>
+                        <label id="consulta-form-biopsicosocial-input-s">
+                            <input type="radio" id="consulta-form-biopsicosocial-s-input" name="biopsicosocial"
+                                value="S"> S (Sí)
+                        </label>
+                    </div>
+                </div>
+                <div id="form-edad" class="form-group">
+                    <label for="id_edad">Edad <span id="span-edad-text">(0 = menor de 1
+                            año)</span></label>
+                    <input type="number" id="id_edad" name="edad" min="0" max="120" step="1"
+                        placeholder="Ej: 0 = bebé, 35 = adulto">
+                </div>
+            </div>
+
+            <!-- FILA 3: Higiene/Diagnóstico, Nivel -->
+            <div id="higiene-row" class="form-row">
+                <div id="higiene-form" class="form-group">
+                    <label for="id_higiene_diagnostico">Higiene / diagnóstico</label>
+                    <input type="text" name="higiene_diagnostico" id="id_higiene_diagnostico"
+                        placeholder="Ingrese el diagnóstico o estado de higiene...">
+                </div>
+                <div id="higiene-nivel" class="form-group">
+                    <label for="id_nivel">Nivel</label>
+                    <select name="nivel" id="id_nivel">
+                        <option value="">-- Seleccione nivel --</option>
+                        <option value="1">Nivel 1</option>
+                        <option value="2">Nivel 2</option>
+                        <option value="3">Nivel 3</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- FILA 4: Procedimiento + "Otros", Procedimientos Realizados -->
+            <div class="form-row" id="procedimiento-row">
+                <div id="prodedimiento-form" class="form-group">
+                    <label for="id_procedimiento">Procedimiento</label>
+                    <select id="id_procedimiento" name="procedimiento">
+                        <option value="">-- Agregar procedimiento --</option>
+                        <option value="Profilaxis">Profilaxis dental</option>
+                        <option value="Restauración">Restauración con resina</option>
+                        <option value="Extracción">Extracción simple</option>
+                        <option value="Endodoncia">Tratamiento de conducto</option>
+                        <option value="Radiografía">Toma de radiografía</option>
+                        <option value="Periodoncia">Periodoncia</option>
+                        <option value="Cirugía">Cirugía oral menor</option>
+                        <option value="Ortodoncia">Ortodoncia</option>
+                        <option value="Prótesis">Prótesis</option>
+                        <option value="Blanqueamiento">Blanqueamiento dental</option>
+                        <option value="Fluorización">Fluorización</option>
+                        <option value="Sellantes">Aplicación de sellantes</option>
+                        <option value="Detartraje">Detartraje</option>
+                        <option value="__otros__">Otro (especificar)...</option>
+                    </select>
+
+                    <div id="otros-wrapper">
+                        <input type="text" id="id_procedimiento_otro" placeholder="Nombre del procedimiento...">
+                        <div id="otros-wrapper-div">
+                            <button type="button" id="btn-cancelar-otro" class="btn-ghost">Cancelar</button>
+                            <button type="button" id="btn-agregar-otro" class="btn-primary">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="procedimientos-realizados" class="form-group">
+                    <label>Procedimientos realizados</label>
+                    <div id="procedimientos-container">
+                        <span id="empty-hint" class="empty-hint">Ninguno
+                            seleccionado. Elige uno a la izquierda.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones pestaña 1 -->
+            <div id="boton-pestaña-11">
+                <a href="{% url 'agenda:index' %}" class="btn-ghost" id="btn-ghost-id">
+                    Cancelar
+                </a>
+                <button type="button" id="boton-pestaña-1-btn-primary" class="btn-primary"
+                    onclick="switchTab('segunda', event)">
+                    Siguiente →
+                </button>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════
+             PANEL — SEGUNDA PESTAÑA
+             ══════════════════════════════════════ -->
+        <div id="panel-segunda">
+
+            <div class="form-row">
+                <div class="form-group flex-2">
+                    <label for="id_criterios_diagnosticos">Criterios Diagnósticos</label>
+                    <textarea id="id_criterios_diagnosticos" name="criterios_diagnosticos" rows="4"
+                        placeholder="Escriba los criterios clínicos observados..."></textarea>
+                </div>
+
+                <div class="form-group flex-2">
+                    <label for="id_indicaciones_medico">Indicaciones y Tratamiento Indicado por el Médico</label>
+                    <textarea id="id_indicaciones_medico" name="indicaciones_medico" rows="4"
+                        placeholder="Tratamiento, dosis o exámenes solicitados por el profesional..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group flex-1">
+                    <label>¿Coincide Criterio?</label>
+                    <div class="radio-group-container">
+                        <label class="radio-option-label">
+                            <input type="radio" name="coincide_criterio" value="S"> S (Sí)
+                        </label>
+                        <label class="radio-option-label">
+                            <input type="radio" name="coincide_criterio" value="N"> N (No)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group flex-3">
+                    <label for="id_sugerido_estudiante">Sugerido por Usted (Estudiante)</label>
+                    <input type="text" id="id_sugerido_estudiante" name="sugerido_estudiante"
+                        placeholder="Escriba su propuesta diagnóstica o terapéutica alternativa...">
+                </div>
+            </div>
+
+            <div class="form-section-title">
+                <h3>Seguimiento del Caso</h3>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group flex-2">
+                    <label for="id_seguimiento_indicado">Indicado / Resultado</label>
+                    <input type="text" id="id_seguimiento_indicado" name="seguimiento_indicado"
+                        placeholder="Evolución clínica o resultados obtenidos...">
+                </div>
+
+                <div class="form-group flex-1">
+                    <label for="id_estado_paciente">Estado Actual</label>
+                    <select id="id_estado_paciente" name="estado_paciente">
+                        <option value="">-- Seleccione estado --</option>
+                        <option value="M">Mejoró</option>
+                        <option value="NM">No mejoró</option>
+                        <option value="E">Estable</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Botones pestaña 2 -->
+            <div id="boton-pestaña-21">
+                <button type="button" class="btn-ghost" id="boton-pestaña-2-btn-ghost"
+                    onclick="switchTab('ficha', event)">
+                    ← Anterior
+                </button>
+                <button type="submit" class="btn-primary" id="btn-submit-form">
+                    Guardar
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+{% endblock %}

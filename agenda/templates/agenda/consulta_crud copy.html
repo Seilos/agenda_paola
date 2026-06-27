@@ -1,0 +1,322 @@
+{% extends 'agenda/base.html' %}
+{% load static %}
+
+{% block title %}Registro de Caso - Agenda{% endblock %}
+
+{% block section_name %}Registro de Caso{% endblock %}
+
+{% block content %}
+<div class="page-card">
+
+    <!-- ── Encabezado ── -->
+    <div
+        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px;">
+        <h2 style="margin: 0; font-weight: 800; font-size: 1.8rem; color: var(--secondary-color);">Registro de Caso</h2>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-weight: 600; color: var(--text-muted); font-size: 1.1rem;">21/06/2026</span>
+
+            <!-- Botón de información -->
+            <button type="button" id="btn-info" onclick="toggleInfoModal()" style="display:flex; align-items:center; justify-content:center; width:30px; height:30px;
+                           border-radius:50%; border:2px solid var(--primary-color); background:transparent;
+                           color:var(--primary-color); font-weight:800; font-size:1rem; cursor:pointer;
+                           transition: background 0.2s, color 0.2s;"
+                onmouseover="this.style.background='var(--primary-color)'; this.style.color='white';"
+                onmouseout="this.style.background='transparent'; this.style.color='var(--primary-color)';"
+                title="Ayuda">
+                i
+            </button>
+        </div>
+    </div>
+
+    <!-- ── Modal de Ayuda ── -->
+    <div id="info-modal-overlay" onclick="toggleInfoModal()"
+        style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:900;">
+    </div>
+    <div id="info-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+                background:white; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.15);
+                padding:30px; z-index:901; max-width:440px; width:90%;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="margin:0; color:var(--secondary-color); font-size:1.1rem;">Información de ayuda</h3>
+            <button onclick="toggleInfoModal()"
+                style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--text-muted); line-height:1;">✕</button>
+        </div>
+        <p style="color:var(--text-color); font-size:0.95rem; margin:0; line-height:1.6;">
+            <!-- Contenido estático — se completará más adelante -->
+            La información de ayuda para este formulario estará disponible próximamente.
+        </p>
+    </div>
+
+    <!-- ── Pestañas ── -->
+    <div class="tab-bar" style="margin-bottom: 30px;">
+        <div class="tab-links">
+            <a href="#" id="tab-btn-ficha" class="tab-link active" onclick="switchTab('ficha', event)">Ficha</a>
+            <a href="#" id="tab-btn-segunda" class="tab-link" onclick="switchTab('segunda', event)">Segunda pestaña</a>
+        </div>
+    </div>
+
+    <!-- ── Formulario ── -->
+    <form id="registro-form" method="POST" action="" onsubmit="event.preventDefault(); alert('Caso guardado (Demo).');">
+        {% csrf_token %}
+
+        <!-- ══════════════════════════════════════
+             PANEL — FICHA (pestaña 1)
+             ══════════════════════════════════════ -->
+        <div id="panel-ficha">
+
+            <!-- FILA 1: Docente (readonly), Ambulatorio (readonly), Preceptor (texto libre) -->
+            <div class="form-row" style="margin-bottom: 20px;">
+                <div class="form-group">
+                    <label for="id_docente">Docente</label>
+                    <input type="text" id="id_docente" name="docente" value="Dr. Alejandro Martínez (Demo)" readonly
+                        style="background-color:#f4f6f8; color:var(--text-muted); cursor:not-allowed;">
+                </div>
+                <div class="form-group">
+                    <label for="id_ambulatorio">Ambulatorio</label>
+                    <input type="text" id="id_ambulatorio" name="ambulatorio" value="Ambulatorio Norte (Demo)" readonly
+                        style="background-color:#f4f6f8; color:var(--text-muted); cursor:not-allowed;">
+                </div>
+                <div class="form-group">
+                    <label for="id_preceptor">Preceptor</label>
+                    <input type="text" id="id_preceptor" name="preceptor" placeholder="Nombre del médico preceptor...">
+                </div>
+            </div>
+
+            <!-- FILA 2: Radios + Edad -->
+            <div class="form-row" style="margin-bottom: 20px; align-items: flex-start;">
+                <div class="form-group" style="flex:0.75;">
+                    <label>Tipo de consulta</label>
+                    <div style="display:flex; gap:15px; align-items:center; height:46px;">
+                        <label
+                            style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; color:var(--text-color)!important; font-weight:normal!important; margin-bottom:0!important; white-space:nowrap;">
+                            <input type="radio" name="tipo_consulta" value="P" style="width:auto; margin:0;"> P
+                            (Primera)
+                        </label>
+                        <label
+                            style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; color:var(--text-color)!important; font-weight:normal!important; margin-bottom:0!important; white-space:nowrap;">
+                            <input type="radio" name="tipo_consulta" value="S" style="width:auto; margin:0;"> S
+                            (Subsec.)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" style="flex:0.75;">
+                    <label>Género</label>
+                    <div style="display:flex; gap:15px; align-items:center; height:46px;">
+                        <label
+                            style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; color:var(--text-color)!important; font-weight:normal!important; margin-bottom:0!important; white-space:nowrap;">
+                            <input type="radio" name="genero" value="F" style="width:auto; margin:0;"> F (Femenino)
+                        </label>
+                        <label
+                            style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; color:var(--text-color)!important; font-weight:normal!important; margin-bottom:0!important; white-space:nowrap;">
+                            <input type="radio" name="genero" value="M" style="width:auto; margin:0;"> M (Masculino)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" style="flex:0.75;">
+                    <label>Caso Biopsicosocial</label>
+                    <div style="display:flex; gap:15px; align-items:center; height:46px;">
+                        <label
+                            style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; color:var(--text-color)!important; font-weight:normal!important; margin-bottom:0!important; white-space:nowrap;">
+                            <input type="radio" name="biopsicosocial" value="N" style="width:auto; margin:0;"> N (No)
+                        </label>
+                        <label
+                            style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; color:var(--text-color)!important; font-weight:normal!important; margin-bottom:0!important; white-space:nowrap;">
+                            <input type="radio" name="biopsicosocial" value="S" style="width:auto; margin:0;"> S (Sí)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label for="id_edad">Edad <span
+                            style="font-weight:normal; font-size:0.8rem; color:var(--text-muted);">(0 = menor de 1
+                            año)</span></label>
+                    <input type="number" id="id_edad" name="edad" min="0" max="120" step="1"
+                        placeholder="Ej: 0 = bebé, 35 = adulto">
+                </div>
+            </div>
+
+            <!-- FILA 3: Higiene/Diagnóstico, Nivel -->
+            <div class="form-row" style="margin-bottom: 20px;">
+                <div class="form-group" style="flex:2.25;">
+                    <label for="id_higiene_diagnostico">Higiene / diagnóstico</label>
+                    <input type="text" name="higiene_diagnostico" id="id_higiene_diagnostico"
+                        placeholder="Ingrese el diagnóstico o estado de higiene...">
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label for="id_nivel">Nivel</label>
+                    <select name="nivel" id="id_nivel">
+                        <option value="">-- Seleccione nivel --</option>
+                        <option value="1">Nivel 1</option>
+                        <option value="2">Nivel 2</option>
+                        <option value="3">Nivel 3</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- FILA 4: Procedimiento + "Otros", Procedimientos Realizados -->
+            <div class="form-row" style="margin-bottom: 30px; align-items: flex-start;">
+                <div class="form-group" style="flex:1;">
+                    <label for="id_procedimiento">Procedimiento</label>
+                    <select id="id_procedimiento">
+                        <option value="">-- Agregar procedimiento --</option>
+                        <option value="Profilaxis">Profilaxis dental</option>
+                        <option value="Restauración">Restauración con resina</option>
+                        <option value="Extracción">Extracción simple</option>
+                        <option value="Endodoncia">Tratamiento de conducto</option>
+                        <option value="Radiografía">Toma de radiografía</option>
+                        <option value="Periodoncia">Periodoncia</option>
+                        <option value="Cirugía">Cirugía oral menor</option>
+                        <option value="Ortodoncia">Ortodoncia</option>
+                        <option value="Prótesis">Prótesis</option>
+                        <option value="Blanqueamiento">Blanqueamiento dental</option>
+                        <option value="Fluorización">Fluorización</option>
+                        <option value="Sellantes">Aplicación de sellantes</option>
+                        <option value="Detartraje">Detartraje</option>
+                        <option value="__otros__">Otro (especificar)...</option>
+                    </select>
+
+                    <div id="otros-wrapper" style="display:none; margin-top:8px;">
+                        <input type="text" id="id_procedimiento_otro" placeholder="Nombre del procedimiento..."
+                            style="width:100%; box-sizing:border-box;">
+                        <div style="display:flex; gap:8px; margin-top:8px;">
+                            <button type="button" id="btn-cancelar-otro" class="btn-ghost"
+                                style="flex:1; padding:8px 12px;">Cancelar</button>
+                            <button type="button" id="btn-agregar-otro" class="btn-primary"
+                                style="flex:1; padding:8px 12px;">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="flex:2;">
+                    <label>Procedimientos realizados</label>
+                    <div id="procedimientos-container"
+                        style="display:flex; flex-wrap:wrap; gap:8px; padding:10px 14px; border:1px solid #cbd5e1;
+                                border-radius:6px; min-height:46px; background:#fafbfc; align-content:center; box-sizing:border-box;">
+                        <span class="empty-hint" style="color:#95a5a6; font-size:0.85rem; font-style:italic;">Ninguno
+                            seleccionado. Elige uno a la izquierda.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones pestaña 1 -->
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #f0f2f5; padding-top:20px; margin-top:20px;">
+                <a href="{% url 'agenda:index' %}" class="btn-ghost"
+                    style="min-width:220px; text-align:center; padding:12px 30px; font-size:1rem;">
+                    Cancelar
+                </a>
+                <button type="button" class="btn-primary" onclick="switchTab('segunda', event)"
+                    style="min-width:220px; padding:12px 30px; font-size:1rem;">
+                    Siguiente →
+                </button>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════
+             PANEL — SEGUNDA PESTAÑA
+             ══════════════════════════════════════ -->
+        <div id="panel-segunda" style="display:none;">
+
+            <div class="empty-state" style="margin-bottom: 30px;">
+                <p>Contenido de la segunda pestaña — se definirá próximamente.</p>
+            </div>
+
+            <!-- Botones pestaña 2 -->
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #f0f2f5; padding-top:20px; margin-top:20px;">
+                <button type="button" class="btn-ghost" onclick="switchTab('ficha', event)"
+                    style="min-width:220px; padding:12px 30px; font-size:1rem;">
+                    ← Anterior
+                </button>
+                <button type="submit" class="btn-primary" style="min-width:220px; padding:12px 30px; font-size:1rem;">
+                    Guardar
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+{% block extra_js %}
+<script>
+    /* ══════════ NAVEGACIÓN DE PESTAÑAS ══════════ */
+    function switchTab(tabName, event) {
+        if (event) event.preventDefault();
+
+        const panels = { ficha: 'panel-ficha', segunda: 'panel-segunda' };
+        const tabBtns = { ficha: 'tab-btn-ficha', segunda: 'tab-btn-segunda' };
+
+        Object.keys(panels).forEach(function (key) {
+            document.getElementById(panels[key]).style.display = (key === tabName) ? 'block' : 'none';
+            document.getElementById(tabBtns[key]).classList.toggle('active', key === tabName);
+        });
+    }
+
+    /* ══════════ MODAL DE AYUDA ══════════ */
+    function toggleInfoModal() {
+        const overlay = document.getElementById('info-modal-overlay');
+        const modal = document.getElementById('info-modal');
+        const visible = overlay.style.display === 'flex';
+        overlay.style.display = visible ? 'none' : 'flex';
+        modal.style.display = visible ? 'none' : 'block';
+    }
+
+    /* ══════════ PROCEDIMIENTOS ══════════ */
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectProc = document.getElementById('id_procedimiento');
+        const container = document.getElementById('procedimientos-container');
+        const emptyHint = container.querySelector('.empty-hint');
+        const otrosWrapper = document.getElementById('otros-wrapper');
+        const otroInput = document.getElementById('id_procedimiento_otro');
+        const btnAgregarOtro = document.getElementById('btn-agregar-otro');
+        const btnCancelarOtro = document.getElementById('btn-cancelar-otro');
+        const selectedSet = new Set();
+
+        function agregarPill(label, key) {
+            if (selectedSet.has(key)) return;
+            selectedSet.add(key);
+            if (emptyHint) emptyHint.style.display = 'none';
+
+            const pill = document.createElement('span');
+            pill.style.cssText = 'display:inline-flex; align-items:center; gap:8px; background-color:var(--primary-color); color:white; padding:4px 10px; border-radius:20px; font-size:0.85rem; font-weight:600; box-shadow:0 2px 5px rgba(26,188,156,0.2);';
+            pill.innerHTML = `<span>${label}</span><span class="remove-btn" style="cursor:pointer; font-weight:bold; opacity:0.8; transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">✕</span>`;
+            pill.querySelector('.remove-btn').addEventListener('click', function () {
+                selectedSet.delete(key);
+                pill.remove();
+                if (selectedSet.size === 0 && emptyHint) emptyHint.style.display = 'inline';
+            });
+            container.appendChild(pill);
+        }
+
+        selectProc.addEventListener('change', function () {
+            const value = selectProc.value;
+            selectProc.value = '';
+            if (!value) return;
+            if (value === '__otros__') {
+                otrosWrapper.style.display = 'block';
+                otroInput.focus();
+            } else {
+                agregarPill(value, value);
+                otrosWrapper.style.display = 'none';
+            }
+        });
+
+        btnAgregarOtro.addEventListener('click', function () {
+            const texto = otroInput.value.trim();
+            if (!texto) { otroInput.focus(); return; }
+            agregarPill(texto, '__otro__' + texto.toLowerCase());
+            otroInput.value = '';
+            otrosWrapper.style.display = 'none';
+        });
+
+        btnCancelarOtro.addEventListener('click', function () {
+            otroInput.value = '';
+            otrosWrapper.style.display = 'none';
+            selectProc.value = '';
+        });
+
+        otroInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); btnAgregarOtro.click(); }
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,33 @@
+# Plan de Acción: Formulario CRUD de Consultas (Actualizado)
+
+El objetivo es actualizar la interfaz del CRUD de consultas médicas en `consulta_crud.html` adaptándolo a las observaciones del usuario:
+
+1. **Paciente (`nombre_id`)**: Se implementará un input de búsqueda autocompletada por AJAX. A medida que el usuario escribe, se mostrarán las sugerencias de pacientes. El ID real se almacenará en un campo oculto (`hidden`).
+   - **Nuevo Botón**: Se agregará un botón "+ Registrar Nuevo Paciente" junto al buscador de paciente para que el usuario pueda registrarlo si no existe.
+2. **Estudiante (`estudiante_id`)**: Se mostrará el nombre del estudiante logueado en la sesión de forma no editable (solo lectura).
+3. **Profesor (`profesor_id`)**: Se implementará una búsqueda autocompletada por AJAX similar a la del paciente.
+4. **Fecha/Hora (`fecha_hora`)**: Se mostrará la fecha y hora actuales en modo de solo lectura (no editable por el usuario).
+5. **Evaluación Docente (`calificacion`, `precicion_diagnostica`, `observaciones_evaluacion`)**: Se omiten como campos editables de este formulario, ya que corresponden al flujo del docente. Solo se mostrarán en modo lectura si ya han sido evaluados (en caso de edición).
+
+Toda la lógica de JavaScript para la inicialización del autocompletado se colocará en un archivo estático separado `consulta_crud.js`, manteniendo el archivo HTML completamente limpio y libre de JS/CSS embebido.
+
+## Cambios Propuestos
+
+### Componente: agenda
+
+#### [NEW] [consulta_crud.js](file:///c:/Users/I5/Documents/CODIGO/AGENDA_PAOLA/agenda/static/agenda/consulta_crud.js)
+Archivo JavaScript para inicializar las instancias de `Autocomplete` para los campos de Paciente y Profesor mediante AJAX, sin contaminar el HTML.
+
+#### [MODIFY] [consulta_crud.html](file:///c:/Users/I5/Documents/CODIGO/AGENDA_PAOLA/agenda/templates/agenda/consulta_crud.html)
+Reestructurar el formulario con las clases de diseño global:
+- Campo de paciente (`nombre_id`) con contenedor para autocompletado y un botón de acción rápida "+ Registrar Nuevo Paciente".
+- Campo de profesor (`profesor_id`) con contenedor para autocompletado.
+- Campo de estudiante y fecha/hora mostrados como texto de solo lectura.
+- Campos de diagnóstico y seguimiento (checkbox, fecha próxima consulta, comentarios).
+- Enlace al archivo script `consulta_crud.js` en el bloque `extra_js`.
+
+## Plan de Verificación
+
+### Verificación Manual
+- Comprobar que los campos de autocompletado y el botón de "+ Registrar Nuevo Paciente" se muestren correctamente y no contengan estilos CSS en línea.
+- Confirmar que los archivos respetan la herencia de `base.html` y no tienen JS/CSS embebido en el HTML.

@@ -21,8 +21,14 @@
     <!-- Manifest PWA -->
     <link rel="manifest" href="{% static 'manifest.json' %}">
 
-    <!-- CSS -->
+    <!-- Sistema de Diseño Global (variables, layout, componentes) -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <!-- CSS exclusivo de esta pantalla -->
     <link rel="stylesheet" href="{% static 'autenticacion/registro.css' %}">
+
+    <!-- Tom Select (Buscador y estilos para select) -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
 
     <!-- Registro del Service Worker -->
     <script>
@@ -55,10 +61,9 @@
                     {% csrf_token %}
 
                     {% if form.non_field_errors %}
-                    <div class="non-field-errors"
-                        style="background-color: #ffe6e6; color: #cc0000; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffa3a3; font-family: sans-serif;">
+                    <div class="alert-form-error">
                         {% for error in form.non_field_errors %}
-                        <p style="margin: 0; font-size: 0.9rem; font-weight: 500;">⚠️ {{ error }}</p>
+                        <p>⚠️ {{ error }}</p>
                         {% endfor %}
                     </div>
                     {% endif %}
@@ -69,7 +74,7 @@
                         <input type="text" id="reg-username" name="username" placeholder="Ej: nick123" required
                             value="{{ form.username.value|default:'' }}">
                         {% if form.username.errors %}
-                        <span class="error-text" style="color: red; font-size: 0.85rem;">
+                        <span class="field-error">
                             {{ form.username.errors.0 }}</span>
                         {% endif %}
 
@@ -83,7 +88,7 @@
                             <input type="text" id="reg-firstname" name="first_name" placeholder="Tu nombre" required
                                 value="{{ form.first_name.value|default:'' }}">
                             {% if form.first_name.errors %}
-                            <span class="error-text" style="color: red; font-size: 0.85rem;">
+                            <span class="field-error">
                                 {{ form.first_name.errors.0 }}</span>
                             {% endif %}
 
@@ -93,10 +98,34 @@
                             <input type="text" id="reg-lastname" name="last_name" placeholder="Tu apellido" required
                                 value="{{ form.last_name.value|default:'' }}">
                             {% if form.last_name.errors %}
-                            <span class="error-text" style="color: red; font-size: 0.85rem;">
+                            <span class="field-error">
                                 {{ form.last_name.errors.0 }}</span>
                             {% endif %}
 
+                        </div>
+                    </div>
+                    <!-- Fin campo nombre y apellido -->
+
+                    <!-- Campo Profesor y Ambulatorio -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reg-profesor">Profesor</label>
+                            <select id="reg-profesor" name="profesor" required>
+                                <option value="" disabled selected>--Selecciona--</option>
+                                {% for profesor in profesores %}
+                                <option value="{{ profesor.id }}">{{ profesor.nombre_completo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reg-ambulatorio">Ambulatorio</label>
+                            <select id="reg-ambulatorio" name="ambulatorio" required>
+                                <option value="" disabled selected>-- Selecciona --</option>
+                                {% for ambulatorio in ambulatorios %}
+                                <option value="{{ ambulatorio.id }}">{{ ambulatorio.nombre }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                     <!-- Fin campo nombre y apellido -->
@@ -107,7 +136,7 @@
                         <input type="email" id="reg-email" name="email" placeholder="ejemplo@correo.com" required
                             value="{{ form.email.value|default:'' }}">
                         {% if form.email.errors %}
-                        <span class="error-text" style="color: red; font-size: 0.85rem;">
+                        <span class="field-error">
                             {{ form.email.errors.0 }}</span>
                         {% endif %}
 
@@ -121,7 +150,7 @@
                             <input type="password" id="reg-pass1" name="password1" placeholder="Mínimo 6 caracteres"
                                 required>
                             {% if form.password1.errors %}
-                            <span class="error-text" style="color: red; font-size: 0.85rem;">
+                            <span class="field-error">
                                 {{ form.password1.errors.0}}</span>
                             {% endif %}
 
@@ -132,7 +161,7 @@
                             <input type="password" id="reg-pass2" name="password2" placeholder="Repetir contraseña"
                                 required>
                             {% if form.password2.errors %}
-                            <span class="error-text" style="color: red; font-size: 0.85rem;">
+                            <span class="field-error">
                                 {{ form.password2.errors.0 }}</span>
                             {% endif %}
                         </div>
@@ -147,6 +176,11 @@
         </div>
     </div>
 
+    <!-- Script de Tom Select (Librería) -->
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    
+    <!-- Script exclusivo de esta pantalla -->
+    <script src="{% static 'autenticacion/registro.js' %}"></script>
 </body>
 
 </html>

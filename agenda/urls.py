@@ -11,4 +11,5 @@ urlpatterns = [
     path('usuarios/', views.gestion_usuarios, name='gestion_usuarios'),
     path('usuarios/buscar/', views.buscar_usuarios_ajax, name='buscar_usuarios_ajax'),
     path('usuarios/cambiar_estado/<int:usuario_id>/', views.cambiar_estado_usuario, name='cambiar_estado_usuario'),
+    path('crear-consulta/', views.consulta_crud, name='consulta_crud'),
 ]

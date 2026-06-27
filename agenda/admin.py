@@ -3,17 +3,37 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.utils.html import format_html
 from auditlog.registry import auditlog
-from .models import Usuario, Paciente, Consultas
+from .models import Usuario, Paciente, Consultas, Profesor, Estudiante, Ambulatorio, procedimientos, ProcedimientosConsultas
 
 # Registrar modelos con auditlog para rastreo automático de cambios desde el frontend
 auditlog.register(Usuario)
 auditlog.register(Paciente)
 auditlog.register(Consultas)
-
+auditlog.register(Profesor)
+auditlog.register(Estudiante)
+auditlog.register(Ambulatorio)
+auditlog.register(procedimientos)
+auditlog.register(ProcedimientosConsultas)
 
 # ──────────────────────────────────────────────────────────────
 # 1. USUARIO
 # ──────────────────────────────────────────────────────────────
+
+class ProfesorInline(admin.StackedInline):
+    model = Profesor
+    can_delete = False
+    verbose_name_plural = 'Perfil de Profesor (Solo si aplica)'
+    fk_name = 'usuario_sistema'
+    extra = 1
+
+class EstudianteInline(admin.StackedInline):
+    model = Estudiante
+    can_delete = False
+    verbose_name_plural = 'Perfil de Estudiante (Solo si aplica)'
+    fk_name = 'usuario_sistema'
+    extra = 1
+
+
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
     """
@@ -24,6 +44,8 @@ class UsuarioAdmin(UserAdmin):
     # Columnas visibles en la lista
     list_display = ('username', 'get_full_name', 'email', 'rol', 'obtener_rol_display', 'is_active', 'is_staff', 'date_joined')
     list_display_links = ('username',)
+    
+    inlines = (ProfesorInline, EstudianteInline)
 
     # Filtros laterales
     list_filter = ('rol', 'is_active', 'is_staff', 'is_superuser')
@@ -160,3 +182,46 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+# ──────────────────────────────────────────────────────────────
+# 5. PROFESOR
+# ──────────────────────────────────────────────────────────────
+@admin.register(Profesor)
+class ProfesorAdmin(admin.ModelAdmin):
+    list_display = ('nombre_completo', 'especialidad', 'usuario_sistema')
+    search_fields = ('nombre_completo', 'especialidad', 'usuario_sistema__username')
+    list_filter = ('especialidad',)
+
+# ──────────────────────────────────────────────────────────────
+# 6. ESTUDIANTE
+# ──────────────────────────────────────────────────────────────
+@admin.register(Estudiante)
+class EstudianteAdmin(admin.ModelAdmin):
+    list_display = ('nombre_completo', 'usuario_sistema', 'profesor_asignado', 'ambulatorio')
+    search_fields = ('nombre_completo', 'usuario_sistema__username', 'profesor_asignado__nombre_completo', 'ambulatorio__nombre')
+    list_filter = ('profesor_asignado', 'ambulatorio')
+
+# ──────────────────────────────────────────────────────────────
+# 7. AMBULATORIO
+# ──────────────────────────────────────────────────────────────
+@admin.register(Ambulatorio)
+class AmbulatorioAdmin(admin.ModelAdmin):
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
+
+# ──────────────────────────────────────────────────────────────
+# 8. PROCEDIMIENTOS
+# ──────────────────────────────────────────────────────────────
+@admin.register(procedimientos)
+class ProcedimientosAdmin(admin.ModelAdmin):
+    list_display = ('procedimiento_nombre',)
+    search_fields = ('procedimiento_nombre',)
+
+# ──────────────────────────────────────────────────────────────
+# 9. PROCEDIMIENTOS CONSULTAS
+# ──────────────────────────────────────────────────────────────
+@admin.register(ProcedimientosConsultas)
+class ProcedimientosConsultasAdmin(admin.ModelAdmin):
+    list_display = ('consulta', 'procedimiento', 'nombre_procedimiento')
+    search_fields = ('nombre_procedimiento', 'consulta__alias_paciente')
+
